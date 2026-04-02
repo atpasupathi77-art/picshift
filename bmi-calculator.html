@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator - CalcFlow | Webora Technologies</title>
+    <meta name="description" content="Calculate your Body Mass Index (BMI) with CalcFlow's free BMI calculator. Get instant health insights and weight categories.">
+    <meta name="keywords" content="BMI calculator, body mass index, calculate BMI, health calculator, weight calculator, fitness tools, Webora Technologies">
+    <meta name="author" content="Webora Technologies">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://calcflow.net/bmi-calculator.html">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <style>
+        /* Modern Professional Website Styles */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: -0.025em;
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* Main Content */
+        .main {
+            min-height: calc(100vh - 200px);
+            padding: 3rem 0;
+        }
+
+        .calculator-section {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .calculator-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .calculator-header p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Forms */
+        .calculator-form {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: var(--bg-white);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin: 0.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: var(--bg-white);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Results */
+        .result-container {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .result-item {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--bg-light), var(--bg-white));
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .result-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-brand .logo-text h1,
+        .footer-brand .logo-text p {
+            color: white;
+        }
+
+        .footer-description {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-column h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #9ca3af;
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 1.5rem;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header .container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .nav {
+                gap: 1.5rem;
+            }
+            
+            .calculator-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .calculator-form,
+            .result-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .calculator-header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>Calculator.net</h1>
+                <p>Professional Online Calculators</p>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="calculators.html" class="nav-link active">Calculators</a>
+                <a href="converters.html" class="nav-link">Converters</a>
+                <a href="tools.html" class="nav-link">Tools</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="calculator-section">
+            <div class="container">
+                <div class="calculator-container">
+                    <div class="calculator-header">
+                        <h2>⚖️ BMI Calculator</h2>
+                        <p>Calculate your Body Mass Index and get health insights</p>
+                    </div>
+
+                    <div class="calculator-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="weight" class="form-label">Weight</label>
+                                <input type="number" id="weight" class="form-input" placeholder="Enter weight" step="0.1" min="1">
+                                <div class="unit-toggle">
+                                    <button onclick="setWeightUnit('kg')" class="unit-btn active" id="kg-btn">kg</button>
+                                    <button onclick="setWeightUnit('lbs')" class="unit-btn" id="lbs-btn">lbs</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="height" class="form-label">Height</label>
+                                <input type="number" id="height" class="form-input" placeholder="Enter height" step="0.1" min="1">
+                                <div class="unit-toggle">
+                                    <button onclick="setHeightUnit('cm')" class="unit-btn active" id="cm-btn">cm</button>
+                                    <button onclick="setHeightUnit('ft')" class="unit-btn" id="ft-btn">ft/in</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="age" class="form-label">Age (Optional)</label>
+                            <input type="number" id="age" class="form-input" placeholder="Enter age" min="1" max="120">
+                            <div class="form-hint">Age helps determine BMI categories for children and teens</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Gender (Optional)</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="gender" value="male">
+                                    <span class="radio-text">Male</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="gender" value="female">
+                                    <span class="radio-text">Female</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="gender" value="" checked>
+                                    <span class="radio-text">Prefer not to say</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button onclick="calculateBMI()" class="btn btn-primary btn-large">Calculate BMI</button>
+                        <button onclick="resetCalculator()" class="btn btn-secondary">Reset</button>
+                    </div>
+
+                    <div id="result" class="result-container hidden">
+                        <h3 class="result-title">Your BMI Results</h3>
+                        
+                        <div class="bmi-display">
+                            <div class="bmi-value">
+                                <span id="bmiValue" class="value-large">0.0</span>
+                                <span class="value-label">BMI</span>
+                            </div>
+                            <div id="bmiCategory" class="bmi-category">-</div>
+                        </div>
+
+                        <div class="result-grid">
+                            <div class="result-item">
+                                <span class="result-label">Weight Status:</span>
+                                <span id="weightStatus" class="result-value">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">Healthy Weight Range:</span>
+                                <span id="healthyRange" class="result-value">-</span>
+                            </div>
+                            <div class="result-item">
+                                <span class="result-label">BMI Prime:</span>
+                                <span id="bmiPrime" class="result-value">-</span>
+                            </div>
+                        </div>
+
+                        <div class="bmi-chart">
+                            <h4>BMI Categories</h4>
+                            <div class="chart-grid">
+                                <div class="chart-item underweight">
+                                    <span class="chart-range">&lt; 18.5</span>
+                                    <span class="chart-category">Underweight</span>
+                                </div>
+                                <div class="chart-item normal">
+                                    <span class="chart-range">18.5 - 24.9</span>
+                                    <span class="chart-category">Normal Weight</span>
+                                </div>
+                                <div class="chart-item overweight">
+                                    <span class="chart-range">25.0 - 29.9</span>
+                                    <span class="chart-category">Overweight</span>
+                                </div>
+                                <div class="chart-item obese">
+                                    <span class="chart-range">≥ 30.0</span>
+                                    <span class="chart-category">Obese</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Calculator.net | Professional Online Calculators</p>
+            <div class="footer-links">
+                <a href="about.html">About</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let weightUnit = 'kg';
+        let heightUnit = 'cm';
+
+        function setWeightUnit(unit) {
+            weightUnit = unit;
+            document.getElementById('kg-btn').classList.toggle('active', unit === 'kg');
+            document.getElementById('lbs-btn').classList.toggle('active', unit === 'lbs');
+        }
+
+        function setHeightUnit(unit) {
+            heightUnit = unit;
+            document.getElementById('cm-btn').classList.toggle('active', unit === 'cm');
+            document.getElementById('ft-btn').classList.toggle('active', unit === 'ft');
+        }
+
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value);
+            const age = parseInt(document.getElementById('age').value) || null;
+            const gender = document.querySelector('input[name="gender"]:checked')?.value;
+
+            if (!weight || !height) {
+                alert('Please enter both weight and height');
+                return;
+            }
+
+            // Convert to metric units for calculation
+            let weightKg = weight;
+            let heightM = height;
+
+            if (weightUnit === 'lbs') {
+                weightKg = weight / 2.20462;
+            }
+
+            if (heightUnit === 'ft') {
+                // Assuming height is in feet (convert to meters)
+                heightM = height * 0.3048;
+            }
+
+            if (heightM <= 0) {
+                alert('Please enter valid height');
+                return;
+            }
+
+            // Calculate BMI
+            const bmi = weightKg / (heightM * heightM);
+            const bmiRounded = bmi.toFixed(1);
+
+            // Calculate BMI category
+            let category, status, healthyRange;
+            if (bmi < 18.5) {
+                category = 'Underweight';
+                status = 'Underweight';
+                healthyRange = `${(18.5 * heightM * heightM).toFixed(1)} - ${(24.9 * heightM * heightM).toFixed(1)} kg`;
+            } else if (bmi < 25) {
+                category = 'Normal Weight';
+                status = 'Normal Weight';
+                healthyRange = 'You are in the healthy range';
+            } else if (bmi < 30) {
+                category = 'Overweight';
+                status = 'Overweight';
+                healthyRange = `${(18.5 * heightM * heightM).toFixed(1)} - ${(24.9 * heightM * heightM).toFixed(1)} kg`;
+            } else {
+                category = 'Obese';
+                status = 'Obese';
+                healthyRange = `${(18.5 * heightM * heightM).toFixed(1)} - ${(24.9 * heightM * heightM).toFixed(1)} kg`;
+            }
+
+            // Calculate BMI Prime
+            const bmiPrime = (bmi / 25).toFixed(2);
+
+            // Display results
+            document.getElementById('bmiValue').textContent = bmiRounded;
+            document.getElementById('bmiCategory').textContent = category;
+            document.getElementById('weightStatus').textContent = status;
+            document.getElementById('healthyRange').textContent = healthyRange;
+            document.getElementById('bmiPrime').textContent = bmiPrime;
+
+            // Update category display
+            const categoryElement = document.getElementById('bmiCategory');
+            categoryElement.className = 'bmi-category ' + category.toLowerCase().replace(' ', '-');
+
+            // Show result container
+            document.getElementById('result').classList.remove('hidden');
+        }
+
+        function resetCalculator() {
+            document.getElementById('weight').value = '';
+            document.getElementById('height').value = '';
+            document.getElementById('age').value = '';
+            document.querySelector('input[name="gender"][value=""]').checked = true;
+            document.getElementById('result').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

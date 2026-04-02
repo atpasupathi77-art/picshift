@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator - CalcFlow | Webora Technologies</title>
+    <meta name="description" content="Advanced scientific calculator with trigonometric functions, logarithms, and more. Free online calculator for students and professionals.">
+    <meta name="keywords" content="scientific calculator, math calculator, trigonometry, logarithms, advanced calculator, student tools, Webora Technologies">
+    <meta name="author" content="Webora Technologies">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://calcflow.net/scientific-calculator.html">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <style>
+        /* Modern Professional Website Styles */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: -0.025em;
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* Main Content */
+        .main {
+            min-height: calc(100vh - 200px);
+            padding: 3rem 0;
+        }
+
+        .calculator-section {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .calculator-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .calculator-header p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Calculator */
+        .calculator {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .calc-display {
+            background: linear-gradient(135deg, #f8fafb, #e5e7eb);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: right;
+            font-size: 1.75rem;
+            font-weight: 700;
+            min-height: 80px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            color: var(--text-dark);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.75rem;
+        }
+
+        .calc-btn {
+            padding: 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--bg-white);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: var(--text-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .calc-btn:hover {
+            background: var(--bg-light);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .calc-btn:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .calc-btn.operator {
+            background: linear-gradient(135deg, var(--bg-light), var(--bg-white));
+            font-weight: 700;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .calc-btn.equals {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            grid-column: span 2;
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+        }
+
+        .calc-btn.equals:hover {
+            background: linear-gradient(135deg, var(--primary-dark), #1e3a8a);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .calc-btn.clear {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+        }
+
+        .calc-btn.clear:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .calc-btn.zero {
+            grid-column: span 2;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-brand .logo-text h1,
+        .footer-brand .logo-text p {
+            color: white;
+        }
+
+        .footer-description {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-column h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #9ca3af;
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 1.5rem;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header .container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .nav {
+                gap: 1.5rem;
+            }
+            
+            .calculator-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .calc-buttons {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .calc-btn.equals {
+                grid-column: span 1;
+            }
+            
+            .calc-btn.zero {
+                grid-column: span 1;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .calculator {
+                padding: 1.5rem;
+            }
+            
+            .calc-display {
+                font-size: 1.5rem;
+                min-height: 70px;
+                padding: 1rem;
+            }
+            
+            .calc-btn {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .calculator-header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <div class="logo-text">
+                    <h1>CalcFlow</h1>
+                    <p>Smart Calculations</p>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="calculators.html" class="nav-link active">Calculators</a>
+                <a href="converters.html" class="nav-link">Converters</a>
+                <a href="tools.html" class="nav-link">Tools</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="calculator-section">
+            <div class="calculator-header">
+                <h1>🔬 Scientific Calculator</h1>
+                <p>Advanced calculator with scientific functions</p>
+            </div>
+
+            <div class="calculator">
+                <div class="calc-display" id="display">0</div>
+                
+                <div class="calc-buttons">
+                    <!-- Row 1: Scientific functions -->
+                    <button class="calc-btn operator" onclick="appendFunction('sin(')">sin</button>
+                    <button class="calc-btn operator" onclick="appendFunction('cos(')">cos</button>
+                    <button class="calc-btn operator" onclick="appendFunction('tan(')">tan</button>
+                    <button class="calc-btn operator" onclick="appendFunction('log(')">log</button>
+                    <button class="calc-btn operator" onclick="appendFunction('ln(')">ln</button>
+                    
+                    <!-- Row 2: More scientific functions -->
+                    <button class="calc-btn operator" onclick="appendFunction('sqrt(')">√</button>
+                    <button class="calc-btn operator" onclick="appendOperator('^')">x^y</button>
+                    <button class="calc-btn operator" onclick="appendNumber('3.14159')">π</button>
+                    <button class="calc-btn operator" onclick="appendNumber('2.71828')">e</button>
+                    <button class="calc-btn operator" onclick="factorial()">x!</button>
+                    
+                    <!-- Row 3: Clear and parentheses -->
+                    <button class="calc-btn clear" onclick="clearDisplay()">C</button>
+                    <button class="calc-btn operator" onclick="appendOperator('(')">(</button>
+                    <button class="calc-btn operator" onclick="appendOperator(')')">)</button>
+                    <button class="calc-btn operator" onclick="deleteLastChar()">⌫</button>
+                    <button class="calc-btn operator" onclick="appendOperator('/')">÷</button>
+                    
+                    <!-- Row 4: Numbers 7-9 and multiplication -->
+                    <button class="calc-btn" onclick="appendNumber('7')">7</button>
+                    <button class="calc-btn" onclick="appendNumber('8')">8</button>
+                    <button class="calc-btn" onclick="appendNumber('9')">9</button>
+                    <button class="calc-btn operator" onclick="appendOperator('*')">×</button>
+                    <button class="calc-btn operator" onclick="percentage()">%</button>
+                    
+                    <!-- Row 5: Numbers 4-6 and subtraction -->
+                    <button class="calc-btn" onclick="appendNumber('4')">4</button>
+                    <button class="calc-btn" onclick="appendNumber('5')">5</button>
+                    <button class="calc-btn" onclick="appendNumber('6')">6</button>
+                    <button class="calc-btn operator" onclick="appendOperator('-')">−</button>
+                    <button class="calc-btn operator" onclick="reciprocal()">1/x</button>
+                    
+                    <!-- Row 6: Numbers 1-3 and addition -->
+                    <button class="calc-btn" onclick="appendNumber('1')">1</button>
+                    <button class="calc-btn" onclick="appendNumber('2')">2</button>
+                    <button class="calc-btn" onclick="appendNumber('3')">3</button>
+                    <button class="calc-btn operator" onclick="appendOperator('+')">+</button>
+                    <button class="calc-btn operator" onclick="negate()">±</button>
+                    
+                    <!-- Row 7: Zero, decimal, and equals -->
+                    <button class="calc-btn zero" onclick="appendNumber('0')">0</button>
+                    <button class="calc-btn" onclick="appendNumber('.')">.</button>
+                    <button class="calc-btn equals" onclick="calculate()">=</button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">
+                <p>Supports basic operations, trigonometric functions, logarithms, and more.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">⚡</div>
+                        <div class="logo-text">
+                            <h3>CalcFlow</h3>
+                            <p>Smart Calculations</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">Professional online calculators and tools for everyday needs. A product of Webora Technologies.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Tools</h4>
+                        <a href="calculators.html">Calculators</a>
+                        <a href="converters.html">Converters</a>
+                        <a href="tools.html">Tools</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="about.html">About</a>
+                        <a href="privacy.html">Privacy</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 CalcFlow. A product of Webora Technologies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let display = document.getElementById('display');
+        let currentInput = '0';
+        let shouldResetDisplay = false;
+
+        function updateDisplay() {
+            display.textContent = currentInput;
+        }
+
+        function clearDisplay() {
+            currentInput = '0';
+            shouldResetDisplay = false;
+            updateDisplay();
+        }
+
+        function appendNumber(num) {
+            if (shouldResetDisplay) {
+                currentInput = '0';
+                shouldResetDisplay = false;
+            }
+            
+            if (currentInput === '0' && num !== '.') {
+                currentInput = num;
+            } else {
+                currentInput += num;
+            }
+            updateDisplay();
+        }
+
+        function appendOperator(op) {
+            if (shouldResetDisplay) {
+                shouldResetDisplay = false;
+            }
+            
+            // Prevent multiple operators in a row
+            const lastChar = currentInput[currentInput.length - 1];
+            if ('+-*/^'.includes(lastChar) && '+-*/^'.includes(op)) {
+                currentInput = currentInput.slice(0, -1) + op;
+            } else {
+                currentInput += op;
+            }
+            updateDisplay();
+        }
+
+        function appendFunction(func) {
+            if (shouldResetDisplay) {
+                currentInput = '0';
+                shouldResetDisplay = false;
+            }
+            currentInput += func;
+            updateDisplay();
+        }
+
+        function deleteLastChar() {
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = '0';
+            }
+            updateDisplay();
+        }
+
+        function calculate() {
+            try {
+                // Replace mathematical functions and constants
+                let expression = currentInput
+                    .replace(/sin/g, 'Math.sin')
+                    .replace(/cos/g, 'Math.cos')
+                    .replace(/tan/g, 'Math.tan')
+                    .replace(/log/g, 'Math.log10')
+                    .replace(/ln/g, 'Math.log')
+                    .replace(/sqrt/g, 'Math.sqrt')
+                    .replace(/\^/g, '**')
+                    .replace(/π/g, 'Math.PI')
+                    .replace(/e/g, 'Math.E');
+
+                // Evaluate the expression
+                let result = eval(expression);
+                
+                // Handle special cases
+                if (isNaN(result) || !isFinite(result)) {
+                    currentInput = 'Error';
+                } else {
+                    currentInput = result.toString();
+                }
+                
+                shouldResetDisplay = true;
+                updateDisplay();
+            } catch (error) {
+                currentInput = 'Error';
+                shouldResetDisplay = true;
+                updateDisplay();
+            }
+        }
+
+        function factorial() {
+            try {
+                let num = parseInt(currentInput);
+                if (num < 0 || num > 170) { // 170! is the maximum that can be represented
+                    currentInput = 'Error';
+                } else {
+                    let result = 1;
+                    for (let i = 2; i <= num; i++) {
+                        result *= i;
+                    }
+                    currentInput = result.toString();
+                }
+                shouldResetDisplay = true;
+                updateDisplay();
+            } catch (error) {
+                currentInput = 'Error';
+                shouldResetDisplay = true;
+                updateDisplay();
+            }
+        }
+
+        function percentage() {
+            try {
+                let result = eval(currentInput) / 100;
+                currentInput = result.toString();
+                shouldResetDisplay = true;
+                updateDisplay();
+            } catch (error) {
+                currentInput = 'Error';
+                shouldResetDisplay = true;
+                updateDisplay();
+            }
+        }
+
+        function reciprocal() {
+            try {
+                let result = 1 / eval(currentInput);
+                currentInput = result.toString();
+                shouldResetDisplay = true;
+                updateDisplay();
+            } catch (error) {
+                currentInput = 'Error';
+                shouldResetDisplay = true;
+                updateDisplay();
+            }
+        }
+
+        function negate() {
+            if (currentInput !== '0') {
+                if (currentInput.startsWith('-')) {
+                    currentInput = currentInput.slice(1);
+                } else {
+                    currentInput = '-' + currentInput;
+                }
+                updateDisplay();
+            }
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            
+            if (key >= '0' && key <= '9') {
+                appendNumber(key);
+            } else if (key === '.') {
+                appendNumber('.');
+            } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+                appendOperator(key);
+            } else if (key === 'Enter' || key === '=') {
+                event.preventDefault();
+                calculate();
+            } else if (key === 'Escape' || key === 'c' || key === 'C') {
+                clearDisplay();
+            } else if (key === 'Backspace') {
+                deleteLastChar();
+            }
+        });
+
+        // Initialize display
+        updateDisplay();
+    </script>
+</body>
+</html>

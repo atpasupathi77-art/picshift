@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight Converter - CalcFlow | Webora Technologies</title>
+    <meta name="description" content="Convert between kilograms, pounds, ounces, grams, and other weight units with CalcFlow's free weight converter.">
+    <meta name="keywords" content="weight converter, kg to lbs, pounds to kilograms, weight conversion, mass converter, Webora Technologies">
+    <meta name="author" content="Webora Technologies">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://calcflow.net/weight-converter.html">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <style>
+        /* Modern Professional Website Styles */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: -0.025em;
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* Main Content */
+        .main {
+            min-height: calc(100vh - 200px);
+            padding: 3rem 0;
+        }
+
+        .calculator-section {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .calculator-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .calculator-header p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Forms */
+        .calculator-form {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: var(--bg-white);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin: 0.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: var(--bg-white);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Results */
+        .result-container {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .result-item {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--bg-light), var(--bg-white));
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .result-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-brand .logo-text h1,
+        .footer-brand .logo-text p {
+            color: white;
+        }
+
+        .footer-description {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-column h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #9ca3af;
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 1.5rem;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header .container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .nav {
+                gap: 1.5rem;
+            }
+            
+            .calculator-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .calculator-form,
+            .result-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .calculator-header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>Calculator.net</h1>
+                <p>Professional Online Calculators</p>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="calculators.html" class="nav-link">Calculators</a>
+                <a href="converters.html" class="nav-link active">Converters</a>
+                <a href="tools.html" class="nav-link">Tools</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="calculator-section">
+            <div class="container">
+                <div class="calculator-container">
+                    <div class="calculator-header">
+                        <h2>⚖️ Weight Converter</h2>
+                        <p>Convert between kilograms, pounds, ounces, grams, and other weight units</p>
+                    </div>
+
+                    <div class="converter-grid">
+                        <div class="converter-item">
+                            <div class="converter-header">
+                                <h3>Kilograms</h3>
+                                <span class="converter-symbol">kg</span>
+                            </div>
+                            <div class="converter-input">
+                                <input type="number" id="kilograms" class="weight-input" placeholder="0" step="0.001" oninput="convertFromKilograms()">
+                            </div>
+                        </div>
+
+                        <div class="converter-item">
+                            <div class="converter-header">
+                                <h3>Pounds</h3>
+                                <span class="converter-symbol">lbs</span>
+                            </div>
+                            <div class="converter-input">
+                                <input type="number" id="pounds" class="weight-input" placeholder="0" step="0.001" oninput="convertFromPounds()">
+                            </div>
+                        </div>
+
+                        <div class="converter-item">
+                            <div class="converter-header">
+                                <h3>Ounces</h3>
+                                <span class="converter-symbol">oz</span>
+                            </div>
+                            <div class="converter-input">
+                                <input type="number" id="ounces" class="weight-input" placeholder="0" step="0.001" oninput="convertFromOunces()">
+                            </div>
+                        </div>
+
+                        <div class="converter-item">
+                            <div class="converter-header">
+                                <h3>Grams</h3>
+                                <span class="converter-symbol">g</span>
+                            </div>
+                            <div class="converter-input">
+                                <input type="number" id="grams" class="weight-input" placeholder="0" step="0.001" oninput="convertFromGrams()">
+                            </div>
+                        </div>
+
+                        <div class="converter-item">
+                            <div class="converter-header">
+                                <h3>Stones</h3>
+                                <span class="converter-symbol">st</span>
+                            </div>
+                            <div class="converter-input">
+                                <input type="number" id="stones" class="weight-input" placeholder="0" step="0.001" oninput="convertFromStones()">
+                            </div>
+                        </div>
+
+                        <div class="converter-item">
+                            <div class="converter-header">
+                                <h3>Milligrams</h3>
+                                <span class="converter-symbol">mg</span>
+                            </div>
+                            <div class="converter-input">
+                                <input type="number" id="milligrams" class="weight-input" placeholder="0" step="0.001" oninput="convertFromMilligrams()">
+                            </div>
+                        </div>
+
+                        <div class="converter-item">
+                            <div class="converter-header">
+                                <h3>Carats</h3>
+                                <span class="converter-symbol">ct</span>
+                            </div>
+                            <div class="converter-input">
+                                <input type="number" id="carats" class="weight-input" placeholder="0" step="0.001" oninput="convertFromCarats()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quick-convert">
+                        <h4>Common Conversions</h4>
+                        <div class="quick-buttons">
+                            <button onclick="setFromKilograms()" class="quick-btn">1 kg</button>
+                            <button onclick="setFromKilograms()" class="quick-btn">10 kg</button>
+                            <button onclick="setFromPounds()" class="quick-btn">1 lb</button>
+                            <button onclick="setFromPounds()" class="quick-btn">10 lbs</button>
+                            <button onclick="setFromGrams()" class="quick-btn">100 g</button>
+                            <button onclick="setFromGrams()" class="quick-btn">500 g</button>
+                        </div>
+                    </div>
+
+                    <div class="reference-info">
+                        <h4>📋 Weight Conversion Reference</h4>
+                        <div class="reference-grid">
+                            <div class="ref-item">
+                                <span class="ref-label">1 Kilogram:</span>
+                                <span class="ref-value">1000 grams = 2.20462 pounds = 35.274 ounces</span>
+                            </div>
+                            <div class="ref-item">
+                                <span class="ref-label">1 Pound:</span>
+                                <span class="ref-value">453.592 grams = 0.453592 kg = 16 ounces</span>
+                            </div>
+                            <div class="ref-item">
+                                <span class="ref-label">1 Ounce:</span>
+                                <span class="ref-value">28.3495 grams = 0.0283495 kg = 0.0625 pounds</span>
+                            </div>
+                            <div class="ref-item">
+                                <span class="ref-label">1 Stone:</span>
+                                <span class="ref-value">6.35029 kg = 14 pounds = 224 ounces</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="resetConverter()" class="btn btn-secondary">Reset All</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Calculator.net | Professional Online Calculators</p>
+            <div class="footer-links">
+                <a href="about.html">About</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let isUpdating = false;
+
+        function convertFromKilograms() {
+            if (isUpdating) return;
+            isUpdating = true;
+            
+            const kg = parseFloat(document.getElementById('kilograms').value) || 0;
+            
+            if (!isNaN(kg)) {
+                const pounds = kg * 2.20462;
+                const ounces = kg * 35.274;
+                const grams = kg * 1000;
+                const stones = kg / 6.35029;
+                const milligrams = kg * 1000000;
+                const carats = kg * 5000;
+                
+                updateWeights('kilograms', kg, pounds, ounces, grams, stones, milligrams, carats);
+            }
+            
+            setTimeout(() => isUpdating = false, 100);
+        }
+
+        function convertFromPounds() {
+            if (isUpdating) return;
+            isUpdating = true;
+            
+            const lbs = parseFloat(document.getElementById('pounds').value) || 0;
+            
+            if (!isNaN(lbs)) {
+                const kg = lbs * 0.453592;
+                const ounces = lbs * 16;
+                const grams = lbs * 453.592;
+                const stones = lbs / 14;
+                const milligrams = lbs * 453592;
+                const carats = lbs * 2267.96;
+                
+                updateWeights('pounds', kg, lbs, ounces, grams, stones, milligrams, carats);
+            }
+            
+            setTimeout(() => isUpdating = false, 100);
+        }
+
+        function convertFromOunces() {
+            if (isUpdating) return;
+            isUpdating = true;
+            
+            const oz = parseFloat(document.getElementById('ounces').value) || 0;
+            
+            if (!isNaN(oz)) {
+                const kg = oz * 0.0283495;
+                const pounds = oz * 0.0625;
+                const grams = oz * 28.3495;
+                const stones = oz / 224;
+                const milligrams = oz * 28349.5;
+                const carats = oz * 141.7476;
+                
+                updateWeights('ounces', kg, pounds, oz, grams, stones, milligrams, carats);
+            }
+            
+            setTimeout(() => isUpdating = false, 100);
+        }
+
+        function convertFromGrams() {
+            if (isUpdating) return;
+            isUpdating = true;
+            
+            const g = parseFloat(document.getElementById('grams').value) || 0;
+            
+            if (!isNaN(g)) {
+                const kg = g / 1000;
+                const pounds = g / 453.592;
+                const ounces = g / 28.3495;
+                const stones = g / 6350.29;
+                const milligrams = g * 1000;
+                const carats = g * 5;
+                
+                updateWeights('grams', kg, pounds, ounces, g, stones, milligrams, carats);
+            }
+            
+            setTimeout(() => isUpdating = false, 100);
+        }
+
+        function convertFromStones() {
+            if (isUpdating) return;
+            isUpdating = true;
+            
+            const st = parseFloat(document.getElementById('stones').value) || 0;
+            
+            if (!isNaN(st)) {
+                const kg = st * 6.35029;
+                const pounds = st * 14;
+                const ounces = st * 224;
+                const grams = st * 6350.29;
+                const milligrams = st * 6350290;
+                const carats = st * 31751.45;
+                
+                updateWeights('stones', kg, pounds, ounces, grams, st, milligrams, carats);
+            }
+            
+            setTimeout(() => isUpdating = false, 100);
+        }
+
+        function convertFromMilligrams() {
+            if (isUpdating) return;
+            isUpdating = true;
+            
+            const mg = parseFloat(document.getElementById('milligrams').value) || 0;
+            
+            if (!isNaN(mg)) {
+                const kg = mg / 1000000;
+                const pounds = mg / 453592;
+                const ounces = mg / 28349.5;
+                const grams = mg / 1000;
+                const stones = mg / 6350290;
+                const carats = mg / 200;
+                
+                updateWeights('milligrams', kg, pounds, ounces, grams, stones, mg, carats);
+            }
+            
+            setTimeout(() => isUpdating = false, 100);
+        }
+
+        function convertFromCarats() {
+            if (isUpdating) return;
+            isUpdating = true;
+            
+            const ct = parseFloat(document.getElementById('carats').value) || 0;
+            
+            if (!isNaN(ct)) {
+                const kg = ct / 5000;
+                const pounds = ct / 2267.96;
+                const ounces = ct / 141.7476;
+                const grams = ct / 5;
+                const stones = ct / 31751.45;
+                const milligrams = ct * 200;
+                
+                updateWeights('carats', kg, pounds, ounces, grams, stones, milligrams, ct);
+            }
+            
+            setTimeout(() => isUpdating = false, 100);
+        }
+
+        function updateWeights(source, kg, pounds, ounces, grams, stones, milligrams, carats) {
+            // Only update the other fields, not the source field
+            if (source !== 'kilograms') {
+                document.getElementById('kilograms').value = kg.toFixed(3);
+            }
+            if (source !== 'pounds') {
+                document.getElementById('pounds').value = pounds.toFixed(3);
+            }
+            if (source !== 'ounces') {
+                document.getElementById('ounces').value = ounces.toFixed(3);
+            }
+            if (source !== 'grams') {
+                document.getElementById('grams').value = grams.toFixed(3);
+            }
+            if (source !== 'stones') {
+                document.getElementById('stones').value = stones.toFixed(3);
+            }
+            if (source !== 'milligrams') {
+                document.getElementById('milligrams').value = milligrams.toFixed(3);
+            }
+            if (source !== 'carats') {
+                document.getElementById('carats').value = carats.toFixed(3);
+            }
+        }
+
+        function setFromKilograms() {
+            document.getElementById('kilograms').value = '1';
+            convertFromKilograms();
+        }
+
+        function setFromPounds() {
+            document.getElementById('pounds').value = '1';
+            convertFromPounds();
+        }
+
+        function setFromGrams() {
+            document.getElementById('grams').value = '100';
+            convertFromGrams();
+        }
+
+        function resetConverter() {
+            document.getElementById('kilograms').value = '';
+            document.getElementById('pounds').value = '';
+            document.getElementById('ounces').value = '';
+            document.getElementById('grams').value = '';
+            document.getElementById('stones').value = '';
+            document.getElementById('milligrams').value = '';
+            document.getElementById('carats').value = '';
+        }
+    </script>
+</body>
+</html>

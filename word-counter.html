@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter - CalcFlow | Webora Technologies</title>
+    <meta name="description" content="Count words, characters, and paragraphs with CalcFlow's free word counter. Perfect for writers, students, and professionals.">
+    <meta name="keywords" content="word counter, character counter, paragraph counter, text analyzer, writing tools, word count, Webora Technologies">
+    <meta name="author" content="Webora Technologies">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://calcflow.net/word-counter.html">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <style>
+        /* Modern Professional Website Styles */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: -0.025em;
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* Main Content */
+        .main {
+            min-height: calc(100vh - 200px);
+            padding: 3rem 0;
+        }
+
+        .calculator-section {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .calculator-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .calculator-header p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Forms */
+        .calculator-form {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: var(--bg-white);
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-hint {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin: 0.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: var(--bg-white);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Results */
+        .result-container {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .result-item {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--bg-light), var(--bg-white));
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .result-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-brand .logo-text h1,
+        .footer-brand .logo-text p {
+            color: white;
+        }
+
+        .footer-description {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-column h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #9ca3af;
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 1.5rem;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header .container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .nav {
+                gap: 1.5rem;
+            }
+            
+            .calculator-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .calculator-form,
+            .result-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .calculator-header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <div class="logo-text">
+                    <h1>CalcFlow</h1>
+                    <p>Smart Calculations</p>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="calculators.html" class="nav-link">Calculators</a>
+                <a href="converters.html" class="nav-link">Converters</a>
+                <a href="tools.html" class="nav-link active">Tools</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="calculator-section">
+            <div class="calculator-header">
+                <h1>📝 Word Counter</h1>
+                <p>Count words, characters, sentences, and paragraphs in your text</p>
+            </div>
+
+            <div class="calculator-form">
+                <div class="form-group">
+                    <label class="form-label">Enter or paste your text below:</label>
+                    <textarea id="textInput" class="form-input" rows="10" placeholder="Type or paste your text here to count words, characters, and more..." oninput="updateCounts()"></textarea>
+                    <div class="form-hint">Start typing or paste your text to see real-time counts</div>
+                </div>
+
+                <div style="margin: 2rem 0; text-align: center;">
+                    <button onclick="clearText()" class="btn btn-outline">Clear Text</button>
+                    <button onclick="copyText()" class="btn">Copy Text</button>
+                    <button onclick="downloadText()" class="btn btn-outline">Download Text</button>
+                </div>
+            </div>
+
+            <div id="result" class="result-container">
+                <h2 class="result-title">Text Statistics</h2>
+                
+                <div class="result-grid">
+                    <div class="result-item">
+                        <span class="result-label">Words:</span>
+                        <span id="wordCount" class="result-value">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Characters:</span>
+                        <span id="charCount" class="result-value">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Characters (no spaces):</span>
+                        <span id="charCountNoSpaces" class="result-value">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Sentences:</span>
+                        <span id="sentenceCount" class="result-value">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Paragraphs:</span>
+                        <span id="paragraphCount" class="result-value">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Lines:</span>
+                        <span id="lineCount" class="result-value">0</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3 style="text-align: center; margin-bottom: 1rem;">Reading Time</h3>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <span class="result-label">Reading Time:</span>
+                            <span id="readingTime" class="result-value">0 min</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Speaking Time:</span>
+                            <span id="speakingTime" class="result-value">0 min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3 style="text-align: center; margin-bottom: 1rem;">Text Details</h3>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <span class="result-label">Average Word Length:</span>
+                            <span id="avgWordLength" class="result-value">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Longest Word:</span>
+                            <span id="longestWord" class="result-value">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">⚡</div>
+                        <div class="logo-text">
+                            <h3>CalcFlow</h3>
+                            <p>Smart Calculations</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">Professional online calculators and tools for everyday needs. A product of Webora Technologies.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Tools</h4>
+                        <a href="calculators.html">Calculators</a>
+                        <a href="converters.html">Converters</a>
+                        <a href="tools.html">Tools</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="about.html">About</a>
+                        <a href="privacy.html">Privacy</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 CalcFlow. A product of Webora Technologies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function updateCounts() {
+            const text = document.getElementById('textInput').value;
+            
+            // Basic counts
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            const wordCount = words.length;
+            const charCount = text.length;
+            const charCountNoSpaces = text.replace(/\s/g, '').length;
+            
+            // Sentence count (simplified)
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const sentenceCount = sentences.length;
+            
+            // Paragraph count
+            const paragraphs = text.split(/\n\n+/).filter(p => p.trim().length > 0);
+            const paragraphCount = paragraphs.length;
+            
+            // Line count
+            const lines = text.split('\n');
+            const lineCount = lines.length;
+            
+            // Reading time (average 200 words per minute)
+            const readingTime = Math.ceil(wordCount / 200);
+            
+            // Speaking time (average 150 words per minute)
+            const speakingTime = Math.ceil(wordCount / 150);
+            
+            // Average word length
+            const avgWordLength = wordCount > 0 ? 
+                (words.reduce((sum, word) => sum + word.length, 0) / wordCount).toFixed(1) : 0;
+            
+            // Longest word
+            const longestWord = words.length > 0 ? 
+                words.reduce((longest, current) => current.length > longest.length ? current : longest) : '-';
+            
+            // Update display
+            document.getElementById('wordCount').textContent = wordCount;
+            document.getElementById('charCount').textContent = charCount;
+            document.getElementById('charCountNoSpaces').textContent = charCountNoSpaces;
+            document.getElementById('sentenceCount').textContent = sentenceCount;
+            document.getElementById('paragraphCount').textContent = paragraphCount;
+            document.getElementById('lineCount').textContent = lineCount;
+            document.getElementById('readingTime').textContent = readingTime + ' min';
+            document.getElementById('speakingTime').textContent = speakingTime + ' min';
+            document.getElementById('avgWordLength').textContent = avgWordLength;
+            document.getElementById('longestWord').textContent = longestWord;
+        }
+
+        function clearText() {
+            document.getElementById('textInput').value = '';
+            updateCounts();
+        }
+
+        function copyText() {
+            const text = document.getElementById('textInput').value;
+            if (text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    // Show success message
+                    const button = event.target;
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    button.style.background = '#27AE60';
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.style.background = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy text:', err);
+                });
+            }
+        }
+
+        function downloadText() {
+            const text = document.getElementById('textInput').value;
+            if (text) {
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'text-' + new Date().getTime() + '.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCounts();
+        });
+    </script>
+</body>
+</html>

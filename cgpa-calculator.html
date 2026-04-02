@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGPA Calculator - CalcFlow | Webora Technologies</title>
+    <meta name="description" content="Calculate your CGPA (Cumulative Grade Point Average) with CalcFlow's free online CGPA calculator. Accurate results for all semesters.">
+    <meta name="keywords" content="CGPA calculator, cumulative GPA, calculate CGPA, semester GPA, grade calculator, student tools, Webora Technologies">
+    <meta name="author" content="Webora Technologies">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://calcflow.net/cgpa-calculator.html">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <style>
+        /* Modern Professional Website Styles */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: -0.025em;
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* Main Content */
+        .main {
+            min-height: calc(100vh - 200px);
+            padding: 3rem 0;
+        }
+
+        .calculator-section {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .calculator-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .calculator-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .calculator-header p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Forms */
+        .calculator-form {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: var(--bg-white);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin: 0.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: var(--bg-white);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Results */
+        .result-container {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .result-item {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--bg-light), var(--bg-white));
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .result-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-brand .logo-text h1,
+        .footer-brand .logo-text p {
+            color: white;
+        }
+
+        .footer-description {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-column h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-column a {
+            display: block;
+            color: #9ca3af;
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 1.5rem;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header .container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .nav {
+                gap: 1.5rem;
+            }
+            
+            .calculator-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .calculator-form,
+            .result-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .calculator-header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <div class="logo-text">
+                    <h1>CalcFlow</h1>
+                    <p>Smart Calculations</p>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="calculators.html" class="nav-link active">Calculators</a>
+                <a href="converters.html" class="nav-link">Converters</a>
+                <a href="tools.html" class="nav-link">Tools</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="calculator-section">
+            <div class="calculator-header">
+                <h1>📚 CGPA Calculator</h1>
+                <p>Calculate your Cumulative Grade Point Average across all semesters</p>
+            </div>
+
+            <div class="calculator-form">
+                <div id="semestersContainer">
+                    <div class="semester-row form-row">
+                        <div class="form-group">
+                            <label class="form-label">Semester</label>
+                            <input type="text" class="form-input semester-name" placeholder="e.g., Semester 1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">SGPA</label>
+                            <input type="number" class="form-input semester-sgpa" placeholder="e.g., 8.5" min="0" max="10" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Credits</label>
+                            <input type="number" class="form-input semester-credits" placeholder="e.g., 24" min="0" step="0.5">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin: 2rem 0; text-align: center;">
+                    <button onclick="addSemester()" class="btn">Add Semester</button>
+                    <button onclick="removeSemester()" class="btn btn-outline">Remove Semester</button>
+                    <button onclick="calculateCGPA()" class="btn">Calculate CGPA</button>
+                    <button onclick="resetCalculator()" class="btn btn-outline">Reset</button>
+                </div>
+            </div>
+
+            <div id="result" class="result-container hidden">
+                <h2 class="result-title">Your CGPA Results</h2>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <span class="result-label">Total CGPA:</span>
+                        <span id="totalCGPA" class="result-value">0.00</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Credits:</span>
+                        <span id="totalCredits" class="result-value">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Total Grade Points:</span>
+                        <span id="totalPoints" class="result-value">0.00</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Percentage:</span>
+                        <span id="percentage" class="result-value">0.00%</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3 style="text-align: center; margin-bottom: 1rem;">Semester Details</h3>
+                    <div id="semesterDetails" style="overflow-x: auto;">
+                        <!-- Semester details will be populated here -->
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3 style="text-align: center; margin-bottom: 1rem;">Grade Classification</h3>
+                    <div id="gradeClassification" style="text-align: center; font-size: 1.2rem; font-weight: bold; color: #FF6B35;">
+                        <!-- Grade classification will be shown here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">⚡</div>
+                        <div class="logo-text">
+                            <h3>CalcFlow</h3>
+                            <p>Smart Calculations</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">Professional online calculators and tools for everyday needs. A product of Webora Technologies.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Tools</h4>
+                        <a href="calculators.html">Calculators</a>
+                        <a href="converters.html">Converters</a>
+                        <a href="tools.html">Tools</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="about.html">About</a>
+                        <a href="privacy.html">Privacy</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 CalcFlow. A product of Webora Technologies. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function addSemester() {
+            const container = document.getElementById('semestersContainer');
+            const semesterRows = container.getElementsByClassName('semester-row');
+            const semesterNumber = semesterRows.length + 1;
+            
+            const semesterRow = document.createElement('div');
+            semesterRow.className = 'semester-row form-row';
+            semesterRow.innerHTML = `
+                <div class="form-group">
+                    <label class="form-label">Semester</label>
+                    <input type="text" class="form-input semester-name" placeholder="e.g., Semester ${semesterNumber}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">SGPA</label>
+                    <input type="number" class="form-input semester-sgpa" placeholder="e.g., 8.5" min="0" max="10" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Credits</label>
+                    <input type="number" class="form-input semester-credits" placeholder="e.g., 24" min="0" step="0.5">
+                </div>
+            `;
+            container.appendChild(semesterRow);
+        }
+
+        function removeSemester() {
+            const container = document.getElementById('semestersContainer');
+            const semesterRows = container.getElementsByClassName('semester-row');
+            if (semesterRows.length > 1) {
+                container.removeChild(semesterRows[semesterRows.length - 1]);
+            }
+        }
+
+        function calculateCGPA() {
+            const semesterRows = document.querySelectorAll('.semester-row');
+            let totalCredits = 0;
+            let totalPoints = 0;
+            let semesterDetails = [];
+
+            semesterRows.forEach((row, index) => {
+                const name = row.querySelector('.semester-name').value || `Semester ${index + 1}`;
+                const sgpa = parseFloat(row.querySelector('.semester-sgpa').value);
+                const credits = parseFloat(row.querySelector('.semester-credits').value);
+
+                if (!isNaN(sgpa) && !isNaN(credits) && credits > 0 && sgpa >= 0 && sgpa <= 10) {
+                    const points = sgpa * credits;
+                    totalCredits += credits;
+                    totalPoints += points;
+                    
+                    semesterDetails.push({
+                        name: name,
+                        sgpa: sgpa,
+                        credits: credits,
+                        points: points,
+                        grade: getGradeClassification(sgpa)
+                    });
+                }
+            });
+
+            if (totalCredits === 0) {
+                alert('Please enter at least one semester with valid SGPA and credits');
+                return;
+            }
+
+            const cgpa = totalPoints / totalCredits;
+            const percentage = (cgpa - 0.75) * 10; // Standard conversion formula
+
+            // Display results
+            document.getElementById('totalCGPA').textContent = cgpa.toFixed(2);
+            document.getElementById('totalCredits').textContent = totalCredits.toFixed(1);
+            document.getElementById('totalPoints').textContent = totalPoints.toFixed(2);
+            document.getElementById('percentage').textContent = percentage.toFixed(2) + '%';
+
+            // Display grade classification
+            const classification = getGradeClassification(cgpa);
+            document.getElementById('gradeClassification').textContent = classification;
+
+            // Display semester details table
+            displaySemesterDetails(semesterDetails);
+
+            // Show result container
+            document.getElementById('result').classList.remove('hidden');
+        }
+
+        function getGradeClassification(sgpa) {
+            if (sgpa >= 9.0) return 'First Class with Distinction (Outstanding)';
+            if (sgpa >= 8.0) return 'First Class with Distinction (Excellent)';
+            if (sgpa >= 7.0) return 'First Class (Very Good)';
+            if (sgpa >= 6.0) return 'Second Class (Good)';
+            if (sgpa >= 5.0) return 'Second Class (Average)';
+            if (sgpa >= 4.0) return 'Third Class (Pass)';
+            return 'Fail';
+        }
+
+        function displaySemesterDetails(semesterDetails) {
+            const detailsContainer = document.getElementById('semesterDetails');
+            
+            let tableHTML = `
+                <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                    <thead>
+                        <tr style="background: #f0f0f0;">
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Semester</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: center;">SGPA</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: center;">Credits</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: center;">Grade Points</th>
+                            <th style="border: 1px solid #ddd; padding: 8px; text-align: center;">Classification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            semesterDetails.forEach(semester => {
+                tableHTML += `
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;">${semester.name}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${semester.sgpa.toFixed(2)}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${semester.credits}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${semester.points.toFixed(2)}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">${semester.grade}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+
+            detailsContainer.innerHTML = tableHTML;
+        }
+
+        function resetCalculator() {
+            const container = document.getElementById('semestersContainer');
+            container.innerHTML = `
+                <div class="semester-row form-row">
+                    <div class="form-group">
+                        <label class="form-label">Semester</label>
+                        <input type="text" class="form-input semester-name" placeholder="e.g., Semester 1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">SGPA</label>
+                        <input type="number" class="form-input semester-sgpa" placeholder="e.g., 8.5" min="0" max="10" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Credits</label>
+                        <input type="number" class="form-input semester-credits" placeholder="e.g., 24" min="0" step="0.5">
+                    </div>
+                </div>
+            `;
+            document.getElementById('result').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
