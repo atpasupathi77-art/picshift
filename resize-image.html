@@ -1,0 +1,595 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Resize Image - Change Dimensions | PicShift</title>
+    <meta name="description" content="Resize images online for free. Change width and height with aspect ratio lock. No upload, 100% private.">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8FAFC;
+            color: #0F172A;
+            line-height: 1.5;
+        }
+        /* Navbar */
+        .navbar {
+            background: #299ACE;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: relative;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: 800;
+            font-size: 1.4rem;
+        }
+        .logo i { font-size: 1.8rem; }
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.2); }
+        
+        /* Dropdown - Card Style */
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 45px;
+            right: 0;
+            left: auto;
+            background: white;
+            width: 560px;
+            border-radius: 20px;
+            padding: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            z-index: 1001;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px);
+        }
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+        }
+        .dropdown-category h4 {
+            color: #64748B;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        .dropdown-category a {
+            display: block;
+            color: #334155;
+            padding: 0.4rem 0;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .dropdown-category a:hover {
+            color: #299ACE;
+            transform: translateX(4px);
+        }
+        
+        /* Mobile: hide More Tools */
+        @media (max-width: 768px) {
+            .dropdown {
+                display: none;
+            }
+        }
+        
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .tool-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #E2E8F0;
+        }
+        .tool-status {
+            display: inline-block;
+            background: #E0F2FE;
+            color: #299ACE;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .page-title { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .page-subtitle { color: #64748B; margin-bottom: 2rem; }
+        
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed #299ACE;
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #F0F9FF;
+            margin-bottom: 1.5rem;
+        }
+        .upload-area:hover, .upload-area.dragover {
+            background: #E0F2FE;
+            border-color: #1E7BA3;
+        }
+        .upload-icon { font-size: 3rem; color: #299ACE; margin-bottom: 1rem; }
+        .upload-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .upload-subtitle { font-size: 0.85rem; color: #64748B; }
+        
+        /* Resize Controls */
+        .resize-controls {
+            background: #F8FAFC;
+            padding: 1.2rem;
+            border-radius: 16px;
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .resize-input {
+            flex: 1;
+            min-width: 150px;
+        }
+        .resize-input label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #299ACE;
+        }
+        .resize-input input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            font-size: 1rem;
+        }
+        .aspect-check {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        /* Preview Area */
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+        .preview-card {
+            flex: 1;
+            min-width: 250px;
+            background: #F8FAFC;
+            border-radius: 20px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .preview-card img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 12px;
+            margin: 0.8rem 0;
+            background: white;
+            object-fit: contain;
+        }
+        .dimension-badge {
+            background: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin: 1.5rem 0;
+            justify-content: center;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .btn-primary { background: #299ACE; color: white; }
+        .btn-primary:hover { background: #1E7BA3; transform: translateY(-2px); }
+        .btn-success { background: #10B981; color: white; }
+        .btn-success:hover { background: #059669; }
+        .btn-secondary { background: #F1F5F9; color: #334155; border: 1px solid #E2E8F0; }
+        .btn-secondary:hover { background: #E2E8F0; }
+        
+        /* How-to section */
+        .how-to {
+            background: #F0F9FF;
+            border-radius: 20px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid #299ACE;
+        }
+        .how-to h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #299ACE;
+        }
+        .how-to p, .how-to ul {
+            font-size: 0.85rem;
+            color: #334155;
+            margin-left: 1.2rem;
+        }
+        .how-to li {
+            margin: 0.3rem 0;
+        }
+        
+        .content-section { margin: 2rem 0; padding-top: 1rem; border-top: 1px solid #E2E8F0; }
+        .trust-badge { background: #F1F5F9; padding: 1.5rem; border-radius: 20px; text-align: center; margin: 2rem 0; }
+        .related-tools { margin-top: 2rem; }
+        .related-tools-list { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; justify-content: center; }
+        .related-tool-link {
+            background: white;
+            border: 1px solid #E2E8F0;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #0F172A;
+            font-weight: 500;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .related-tool-link:hover { border-color: #299ACE; color: #299ACE; }
+        .footer { background: #299ACE; color: white; text-align: center; padding: 2rem; margin-top: 2rem; }
+        .footer a { color: white; text-decoration: none; margin: 0 1rem; }
+        .error-message, .success-message { padding: 0.8rem; border-radius: 12px; margin: 1rem 0; text-align: center; }
+        .error-message { background: #FEE2E2; color: #DC2626; border-left: 4px solid #DC2626; }
+        .success-message { background: #DCFCE7; color: #16A34A; border-left: 4px solid #16A34A; }
+        
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; text-align: center; }
+            .main-container { padding: 1rem; }
+            .page-title { font-size: 1.5rem; }
+            .preview-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo"><i class="fas fa-crop-alt"></i> PicShift</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="compress-image.html">Compress</a></li>
+            <li><a href="resize-image.html" class="active">Resize</a></li>
+            <li><a href="crop-image.html">Crop</a></li>
+            <li><a href="jpg-to-png.html">Jpg-Png</a></li>
+            <li class="dropdown">
+                <a href="#">More Tools <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-grid">
+                        <div class="dropdown-category">
+                            <h4>CONVERTERS</h4>
+                            <a href="webp-to-png.html">WebP to PNG</a>
+                            <a href="to-webp.html">Image to WebP</a>
+                            <a href="to-base64.html">Image to Base64</a>
+                            <a href="base64-to-image.html">Base64 to Image</a>
+                        </div>
+                        <div class="dropdown-category">
+                            <h4>ENHANCERS</h4>
+                            <a href="image-to-hd.html">Image to HD</a>
+                            <a href="blur.html">Blur Effect</a>
+                            <a href="brightness.html">Brightness</a>
+                            <a href="grayscale.html">Grayscale</a>
+                        </div>
+                        <div class="dropdown-category">
+                            <h4>PDF TOOLS</h4>
+                            <a href="image-to-pdf.html">Image to PDF</a>
+                            <a href="pdf-to-image.html">PDF to Image</a>
+                        </div>
+                        <div class="dropdown-category">
+                            <h4>UTILITIES</h4>
+                            <a href="rotate.html">Rotate Image</a>
+                            <a href="watermark.html">Add Watermark</a>
+                            <a href="png-to-jpg.html">PNG to JPG</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="main-container">
+        <div class="tool-card">
+            <div class="tool-status">⚡ 100% Client-Side | No Upload</div>
+            <h1 class="page-title">Resize Image</h1>
+            <p class="page-subtitle">Change image dimensions with aspect ratio control.</p>
+
+            <!-- Upload Area -->
+            <div id="uploadArea" class="upload-area">
+                <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                <div class="upload-title">Drop your image here or click to browse</div>
+                <div class="upload-subtitle">Supports JPG, PNG, WebP, GIF | Max 50MB</div>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            </div>
+
+            <!-- Tool Container (hidden until upload) -->
+            <div id="toolContainer" style="display: none;">
+                <div class="resize-controls">
+                    <div class="resize-input">
+                        <label>Width (px)</label>
+                        <input type="number" id="widthInput" step="1">
+                    </div>
+                    <div class="resize-input">
+                        <label>Height (px)</label>
+                        <input type="number" id="heightInput" step="1">
+                    </div>
+                </div>
+                <div class="aspect-check">
+                    <input type="checkbox" id="aspectLock" checked> <label>Lock Aspect Ratio</label>
+                </div>
+
+                <!-- Preview container (shows original immediately) -->
+                <div id="previewContainer">
+                    <div class="preview-container">
+                        <div class="preview-card">
+                            <h4><i class="fas fa-image"></i> Original Image</h4>
+                            <img id="originalPreview" alt="Original">
+                            <div id="originalDim" class="dimension-badge"></div>
+                        </div>
+                        <div class="preview-card">
+                            <h4><i class="fas fa-expand-alt"></i> Resized Image</h4>
+                            <img id="resizedPreview" alt="Resized">
+                            <div id="resizedDim" class="dimension-badge"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button id="resizeBtn" class="btn btn-primary"><i class="fas fa-expand-alt"></i> Resize Image</button>
+                    <button id="downloadBtn" class="btn btn-success" style="display: none;"><i class="fas fa-download"></i> Download Resized</button>
+                    <button id="resetBtn" class="btn btn-secondary"><i class="fas fa-trash-alt"></i> Clear All</button>
+                </div>
+            </div>
+
+            <div id="messageArea"></div>
+
+            <!-- How to use (simple explanation) -->
+            <div class="how-to">
+                <h3><i class="fas fa-info-circle"></i> How to use this tool</h3>
+                <ul>
+                    <li><strong>1. Upload an image</strong> – Drag & drop or click to browse.</li>
+                    <li><strong>2. Adjust dimensions</strong> – Enter new width or height. The aspect ratio lock keeps proportions.</li>
+                    <li><strong>3. Click "Resize Image"</strong> – The resized preview appears on the right.</li>
+                    <li><strong>4. Download</strong> – Save your resized image as PNG.</li>
+                </ul>
+                <p>✅ All processing happens in your browser – no upload, completely private.</p>
+            </div>
+
+            <div class="content-section">
+                <h2>About Resizing</h2>
+                <p>Resizing changes the pixel dimensions of your image. Use it to fit social media, websites, or email attachments.</p>
+                <ul>
+                    <li><strong>Lock Aspect Ratio</strong> – Maintains original proportions automatically.</li>
+                    <li><strong>High Quality</strong> – Uses canvas API for smooth resampling.</li>
+                    <li><strong>Supports all formats</strong> – JPG, PNG, WebP, GIF.</li>
+                </ul>
+            </div>
+
+            <div class="trust-badge">
+                <h3><i class="fas fa-lock"></i> 100% Private & Secure</h3>
+                <p>Your images never leave your device. All resizing happens locally.</p>
+            </div>
+
+            <div class="related-tools">
+                <h3>Related Tools</h3>
+                <div class="related-tools-list">
+                    <a href="compress-image.html" class="related-tool-link"><i class="fas fa-compress-alt"></i> Compress Image</a>
+                    <a href="crop-image.html" class="related-tool-link"><i class="fas fa-crop"></i> Crop Image</a>
+                    <a href="jpg-to-png.html" class="related-tool-link"><i class="fas fa-image"></i> JPG to PNG</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 PicShift | All processing done locally in your browser</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">
+            <a href="about.html">About</a> | <a href="contact.html">Contact</a> | <a href="privacy-policy.html">Privacy</a> | <a href="terms.html">Terms</a>
+        </p>
+    </footer>
+
+    <script>
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const toolContainer = document.getElementById('toolContainer');
+        const originalPreview = document.getElementById('originalPreview');
+        const resizedPreview = document.getElementById('resizedPreview');
+        const originalDim = document.getElementById('originalDim');
+        const resizedDim = document.getElementById('resizedDim');
+        const widthInput = document.getElementById('widthInput');
+        const heightInput = document.getElementById('heightInput');
+        const aspectLock = document.getElementById('aspectLock');
+        const resizeBtn = document.getElementById('resizeBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const messageArea = document.getElementById('messageArea');
+
+        let originalFile = null;
+        let originalImage = new Image();
+        let resizedDataUrl = null;
+        let originalWidth = 0, originalHeight = 0;
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+
+        function showMessage(text, type = 'error') {
+            messageArea.innerHTML = `<div class="${type}-message">${text}</div>`;
+            setTimeout(() => messageArea.innerHTML = '', 4000);
+        }
+
+        // Upload triggers
+        uploadArea.onclick = () => fileInput.click();
+        fileInput.onchange = (e) => { if (e.target.files[0]) handleFile(e.target.files[0]); };
+        uploadArea.ondragover = (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); };
+        uploadArea.ondragleave = () => uploadArea.classList.remove('dragover');
+        uploadArea.ondrop = (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+        };
+
+        // Aspect ratio helpers
+        function updateHeight() {
+            if (aspectLock.checked && originalWidth > 0) {
+                const ratio = originalHeight / originalWidth;
+                heightInput.value = Math.round(widthInput.value * ratio);
+            }
+        }
+        function updateWidth() {
+            if (aspectLock.checked && originalHeight > 0) {
+                const ratio = originalWidth / originalHeight;
+                widthInput.value = Math.round(heightInput.value * ratio);
+            }
+        }
+        widthInput.addEventListener('input', updateHeight);
+        heightInput.addEventListener('input', updateWidth);
+
+        // Handle uploaded file
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showMessage('Please select an image file');
+                return;
+            }
+            if (file.size > 50 * 1024 * 1024) {
+                showMessage('File too large. Max 50MB');
+                return;
+            }
+            originalFile = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                originalImage.onload = () => {
+                    originalWidth = originalImage.width;
+                    originalHeight = originalImage.height;
+                    
+                    // Set input fields to original dimensions
+                    widthInput.value = originalWidth;
+                    heightInput.value = originalHeight;
+                    
+                    // Show original preview immediately
+                    originalPreview.src = e.target.result;
+                    originalDim.textContent = `${originalWidth} x ${originalHeight} px`;
+                    
+                    // Initially resized preview is same as original
+                    resizedPreview.src = e.target.result;
+                    resizedDim.textContent = `${originalWidth} x ${originalHeight} px`;
+                    resizedDataUrl = e.target.result;
+                    
+                    // Hide upload area, show tool container
+                    uploadArea.style.display = 'none';
+                    toolContainer.style.display = 'block';
+                    downloadBtn.style.display = 'none';
+                    
+                    showMessage(`Image loaded! Original size: ${originalWidth} x ${originalHeight} px. Adjust width/height and click Resize.`, 'success');
+                };
+                originalImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Resize logic
+        function resizeImage() {
+            let newWidth = parseInt(widthInput.value);
+            let newHeight = parseInt(heightInput.value);
+            if (isNaN(newWidth) || isNaN(newHeight) || newWidth <= 0 || newHeight <= 0) {
+                showMessage('Please enter valid width and height');
+                return;
+            }
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+            ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
+            resizedDataUrl = canvas.toDataURL('image/png');
+            resizedPreview.src = resizedDataUrl;
+            resizedDim.textContent = `${newWidth} x ${newHeight} px`;
+            downloadBtn.style.display = 'inline-flex';
+            showMessage(`Resized to ${newWidth} x ${newHeight} px.`, 'success');
+        }
+
+        function downloadImage() {
+            if (!resizedDataUrl) return;
+            const link = document.createElement('a');
+            link.download = `resized_${Date.now()}.png`;
+            link.href = resizedDataUrl;
+            link.click();
+            showMessage('Image downloaded!', 'success');
+        }
+
+        function reset() {
+            originalFile = null;
+            originalImage = new Image();
+            resizedDataUrl = null;
+            toolContainer.style.display = 'none';
+            uploadArea.style.display = 'block';
+            fileInput.value = '';
+            downloadBtn.style.display = 'none';
+            messageArea.innerHTML = '';
+            widthInput.value = 800;
+            heightInput.value = 600;
+            aspectLock.checked = true;
+        }
+
+        resizeBtn.onclick = resizeImage;
+        downloadBtn.onclick = downloadImage;
+        resetBtn.onclick = reset;
+    </script>
+</body>
+</html>

@@ -1,0 +1,447 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Base64 to Image - Decode Base64 | PicShift</title>
+    <meta name="description" content="Convert Base64 strings back to images online for free. Decode data URLs to PNG/JPG. Upload TXT file or paste. No upload, 100% private.">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8FAFC;
+            color: #0F172A;
+            line-height: 1.5;
+        }
+        .navbar {
+            background: #299ACE;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: 800;
+            font-size: 1.4rem;
+        }
+        .logo i { font-size: 1.8rem; }
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.2); }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background: white;
+            width: 560px;
+            border-radius: 12px;
+            padding: 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            z-index: 1001;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px);
+        }
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .dropdown-category h4 {
+            color: #64748B;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+        .dropdown-category a {
+            display: block;
+            color: #334155;
+            padding: 0.4rem 0;
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+        .dropdown-category a:hover { color: #299ACE; }
+        
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .tool-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #E2E8F0;
+        }
+        .tool-status {
+            display: inline-block;
+            background: #E0F2FE;
+            color: #299ACE;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .page-title { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .page-subtitle { color: #64748B; margin-bottom: 2rem; }
+        
+        .input-area {
+            margin: 1.5rem 0;
+        }
+        .input-area label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: #299ACE;
+        }
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #E2E8F0;
+            border-radius: 16px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            resize: vertical;
+            background: #FAFCFF;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #299ACE;
+        }
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+            align-items: center;
+        }
+        .action-btn {
+            background: #F1F5F9;
+            border: 1px solid #E2E8F0;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+        .action-btn:hover {
+            background: #E0F2FE;
+            border-color: #299ACE;
+        }
+        .file-input-label {
+            background: #F1F5F9;
+            border: 1px solid #E2E8F0;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        .file-input-label:hover {
+            background: #E0F2FE;
+            border-color: #299ACE;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        
+        .preview-area {
+            margin: 1.5rem 0;
+            text-align: center;
+            display: none;
+        }
+        .preview-area img {
+            max-width: 100%;
+            max-height: 350px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: white;
+            border: 1px solid #E2E8F0;
+        }
+        .info-text {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #64748B;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+        .btn-primary { background: #299ACE; color: white; }
+        .btn-primary:hover { background: #1E7BA3; transform: translateY(-2px); }
+        .btn-success { background: #10B981; color: white; }
+        .btn-success:hover { background: #059669; }
+        .btn-secondary { background: #F1F5F9; color: #334155; border: 1px solid #E2E8F0; }
+        
+        .how-to {
+            background: #F0F9FF;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-left: 4px solid #299ACE;
+        }
+        .trust-badge { background: #F1F5F9; padding: 1.5rem; border-radius: 20px; text-align: center; margin: 2rem 0; }
+        .related-tools-list { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+        .related-tool-link {
+            background: white;
+            border: 1px solid #E2E8F0;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #0F172A;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer { background: #299ACE; color: white; text-align: center; padding: 2rem; margin-top: 2rem; }
+        .footer a { color: white; text-decoration: none; margin: 0 1rem; }
+        .error-message, .success-message { padding: 0.8rem; border-radius: 12px; margin: 1rem 0; text-align: center; }
+        .error-message { background: #FEE2E2; color: #DC2626; }
+        .success-message { background: #DCFCE7; color: #16A34A; }
+        
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; text-align: center; }
+            .dropdown-menu { position: fixed; left: 1rem; right: 1rem; width: auto; top: auto; bottom: 70px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="logo"><i class="fas fa-crop-alt"></i> PicShift</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="compress-image.html">Compress</a></li>
+        <li><a href="resize-image.html">Resize</a></li>
+        <li><a href="crop-image.html">Crop</a></li>
+        <li><a href="jpg-to-png.html">Jpg-Png</a></li>
+        <li class="dropdown">
+            <a href="#" class="active">More Tools <i class="fas fa-chevron-down"></i></a>
+            <div class="dropdown-menu">
+                <div class="dropdown-grid">
+                    <div class="dropdown-category"><h4>CONVERTERS</h4><a href="webp-to-png.html">WebP to PNG</a><a href="to-webp.html">Image to WebP</a><a href="to-base64.html">Image to Base64</a><a href="base64-to-image.html">Base64 to Image</a></div>
+                    <div class="dropdown-category"><h4>ENHANCERS</h4><a href="image-to-hd.html">Image to HD</a><a href="blur.html">Blur Effect</a><a href="brightness.html">Brightness</a><a href="grayscale.html">Grayscale</a></div>
+                    <div class="dropdown-category"><h4>PDF TOOLS</h4><a href="image-to-pdf.html">Image to PDF</a><a href="pdf-to-image.html">PDF to Image</a></div>
+                    <div class="dropdown-category"><h4>UTILITIES</h4><a href="rotate.html">Rotate Image</a><a href="watermark.html">Add Watermark</a><a href="png-to-jpg.html">PNG to JPG</a></div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<main class="main-container">
+    <div class="tool-card">
+        <div class="tool-status">⚡ 100% Client-Side | No Upload</div>
+        <h1 class="page-title">Base64 to Image</h1>
+        <p class="page-subtitle">Convert Base64 strings back into viewable images. Paste or upload a .txt file.</p>
+
+        <div class="input-area">
+            <label>Base64 String (data:image/...;base64,...)</label>
+            <textarea id="base64Input" rows="5" placeholder='Example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='></textarea>
+            <div class="action-buttons">
+                <button id="exampleBtn" class="action-btn"><i class="fas fa-code"></i> Load Example</button>
+                <label class="file-input-label"><i class="fas fa-file-alt"></i> Upload TXT File
+                    <input type="file" id="txtFileInput" accept=".txt,text/plain">
+                </label>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button id="convertBtn" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Convert to Image</button>
+            <button id="clearBtn" class="btn btn-secondary"><i class="fas fa-trash-alt"></i> Clear</button>
+        </div>
+
+        <div id="previewArea" class="preview-area">
+            <h4>Decoded Image</h4>
+            <img id="previewImage" alt="Decoded preview">
+            <div id="imageInfo" class="info-text"></div>
+            <button id="downloadBtn" class="btn btn-success" style="display: none; margin-top: 1rem;"><i class="fas fa-download"></i> Download Image</button>
+        </div>
+
+        <div id="messageArea"></div>
+
+        <div class="how-to">
+            <h3><i class="fas fa-info-circle"></i> How to use</h3>
+            <ul style="margin-left: 1.5rem;">
+                <li>1. Paste a Base64 string or upload a .txt file containing one.</li>
+                <li>2. Click "Convert to Image" to preview and decode.</li>
+                <li>3. Download the image as PNG.</li>
+            </ul>
+        </div>
+
+        <div class="trust-badge">
+            <h3><i class="fas fa-lock"></i> 100% Private & Secure</h3>
+            <p>All processing happens in your browser. No upload, no server.</p>
+        </div>
+
+        <div class="related-tools">
+            <h3>Related Tools</h3>
+            <div class="related-tools-list">
+                <a href="to-base64.html" class="related-tool-link"><i class="fas fa-code"></i> Image to Base64</a>
+                <a href="compress-image.html" class="related-tool-link"><i class="fas fa-compress-alt"></i> Compress</a>
+                <a href="jpg-to-png.html" class="related-tool-link"><i class="fas fa-image"></i> JPG to PNG</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2026 PicShift | All processing done locally</p>
+    <p><a href="about.html">About</a> | <a href="contact.html">Contact</a> | <a href="privacy-policy.html">Privacy</a> | <a href="terms.html">Terms</a></p>
+</footer>
+
+<script>
+    const base64Input = document.getElementById('base64Input');
+    const convertBtn = document.getElementById('convertBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const exampleBtn = document.getElementById('exampleBtn');
+    const txtFileInput = document.getElementById('txtFileInput');
+    const previewArea = document.getElementById('previewArea');
+    const previewImage = document.getElementById('previewImage');
+    const imageInfo = document.getElementById('imageInfo');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const messageDiv = document.getElementById('messageArea');
+
+    let currentDataUrl = null;
+
+    function showMessage(msg, type) {
+        messageDiv.innerHTML = `<div class="${type}-message">${msg}</div>`;
+        setTimeout(() => messageDiv.innerHTML = '', 4000);
+    }
+
+    function cleanBase64(input) {
+        let str = input.trim();
+        if (str.startsWith('data:image')) return str;
+        // try to detect image type from header
+        if (str.startsWith('/9j/')) return 'data:image/jpeg;base64,' + str;
+        if (str.startsWith('iVBORw0KGgo')) return 'data:image/png;base64,' + str;
+        if (str.startsWith('R0lGOD')) return 'data:image/gif;base64,' + str;
+        if (str.startsWith('UklGR')) return 'data:image/webp;base64,' + str;
+        return 'data:image/png;base64,' + str;
+    }
+
+    function convert() {
+        let raw = base64Input.value.trim();
+        if (!raw) {
+            showMessage('Please paste a Base64 string or upload a .txt file', 'error');
+            return;
+        }
+        try {
+            const fullDataUrl = cleanBase64(raw);
+            const img = new Image();
+            img.onload = () => {
+                currentDataUrl = fullDataUrl;
+                previewImage.src = fullDataUrl;
+                const match = fullDataUrl.match(/data:image\/([^;]+)/);
+                const format = match ? match[1] : 'png';
+                imageInfo.innerHTML = `Dimensions: ${img.width} x ${img.height} px | Format: ${format.toUpperCase()}`;
+                previewArea.style.display = 'block';
+                downloadBtn.style.display = 'inline-flex';
+                showMessage('Image decoded successfully!', 'success');
+            };
+            img.onerror = () => {
+                showMessage('Invalid Base64 string. Please check the format.', 'error');
+                previewArea.style.display = 'none';
+                downloadBtn.style.display = 'none';
+                currentDataUrl = null;
+            };
+            img.src = fullDataUrl;
+        } catch (e) {
+            showMessage('Error: ' + e.message, 'error');
+        }
+    }
+
+    function downloadImage() {
+        if (!currentDataUrl) return;
+        const link = document.createElement('a');
+        link.download = `decoded_image_${Date.now()}.png`;
+        link.href = currentDataUrl;
+        link.click();
+        showMessage('Image downloaded!', 'success');
+    }
+
+    function clearAll() {
+        base64Input.value = '';
+        previewArea.style.display = 'none';
+        downloadBtn.style.display = 'none';
+        currentDataUrl = null;
+        messageDiv.innerHTML = '';
+    }
+
+    function loadExample() {
+        base64Input.value = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+        showMessage('Example loaded. Click Convert to see the image.', 'success');
+    }
+
+    function handleTxtFile(file) {
+        if (!file) return;
+        if (file.type !== 'text/plain' && !file.name.endsWith('.txt')) {
+            showMessage('Please select a .txt file', 'error');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            base64Input.value = e.target.result;
+            showMessage('File loaded! Click Convert to decode.', 'success');
+        };
+        reader.onerror = () => {
+            showMessage('Error reading file.', 'error');
+        };
+        reader.readAsText(file);
+    }
+
+    txtFileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) handleTxtFile(e.target.files[0]);
+        txtFileInput.value = ''; // allow re-upload of same file
+    });
+
+    convertBtn.onclick = convert;
+    clearBtn.onclick = clearAll;
+    exampleBtn.onclick = loadExample;
+    downloadBtn.onclick = downloadImage;
+</script>
+</body>
+</html>

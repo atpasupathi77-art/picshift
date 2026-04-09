@@ -1,601 +1,190 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CalcFlow - Smart Calculations Made Simple | Webora Technologies</title>
-    <meta name="description" content="CalcFlow offers professional online calculators for math, finance, health, GPA, CGPA and conversions. Fast, accurate, and mobile-friendly tools for everyday calculations.">
-    <meta name="keywords" content="online calculator, math calculator, financial calculator, BMI calculator, age calculator, percentage calculator, temperature converter, weight converter, loan calculator, interest calculator, scientific calculator, currency converter, GPA calculator, CGPA calculator, fast calculations, Webora Technologies">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>PicShift | Professional Image Tools - Free Online Editor</title>
+    <meta name="description" content="Professional image tools that work in your browser. Compress, resize, convert, crop, watermark & more. 100% free, no upload, completely private.">
+    <meta name="keywords" content="image tools, free image editor, compress image, resize image, convert image, crop image, watermark, base64, webp">
     <meta name="author" content="Webora Technologies">
-    <meta name="robots" content="index, follow">
-    <meta property="og:title" content="CalcFlow - Smart Calculations Made Simple">
-    <meta property="og:description" content="Professional online calculators for math, finance, health, GPA, CGPA and conversions">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://calcflow.net">
-    <meta property="og:image" content="https://calcflow.net/images/og-image.jpg">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="CalcFlow - Smart Calculations Made Simple">
-    <meta name="twitter:description" content="Professional online calculators for math, finance, health, GPA, CGPA and conversions">
-    <link rel="canonical" href="https://calcflow.net/">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
-    <style>
-        /* Modern Professional Website Styles */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-color: #2563eb;
-            --primary-dark: #1e40af;
-            --secondary-color: #10b981;
-            --accent-color: #f59e0b;
-            --text-dark: #1f2937;
-            --text-light: #6b7280;
-            --bg-light: #f9fafb;
-            --bg-white: #ffffff;
-            --border-color: #e5e7eb;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background: var(--bg-light);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        .header {
-            background: var(--bg-white);
-            box-shadow: var(--shadow-sm);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .logo-icon {
-            font-size: 2rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .logo-text h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            letter-spacing: -0.025em;
-        }
-
-        .logo-text p {
-            font-size: 0.875rem;
-            color: var(--text-light);
-            font-weight: 500;
-        }
-
-        .nav {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-link {
-            color: var(--text-dark);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-color);
-        }
-
-        .nav-link.active {
-            color: var(--primary-color);
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1rem;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--primary-color);
-            border-radius: 2px;
-        }
-
-        /* Main Content */
-        .main {
-            min-height: calc(100vh - 200px);
-            padding: 3rem 0;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 4rem;
-            padding: 2rem 0;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--text-dark);
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.05em;
-            line-height: 1.1;
-        }
-
-        .hero .gradient-text {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            line-height: 1.7;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            display: inline-block;
-            padding: 0.875rem 2rem;
-            background: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.2s;
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .btn-secondary {
-            display: inline-block;
-            padding: 0.875rem 2rem;
-            background: var(--bg-white);
-            color: var(--primary-color);
-            text-decoration: none;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-1px);
-        }
-
-        /* Tools Section */
-        .tools-section {
-            margin-bottom: 4rem;
-        }
-
-        .tools-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .tools-header h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 1rem;
-        }
-
-        .tools-header p {
-            font-size: 1.125rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .tool-card {
-            background: var(--bg-white);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .tool-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            transform: scaleX(0);
-            transition: transform 0.3s;
-        }
-
-        .tool-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary-color);
-        }
-
-        .tool-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .tool-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .tool-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .tool-description {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .tool-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
-            transition: gap 0.2s;
-        }
-
-        .tool-link:hover {
-            gap: 0.75rem;
-        }
-
-        /* Stats Section */
-        .stats-section {
-            background: var(--bg-white);
-            border-radius: 16px;
-            padding: 3rem 2rem;
-            margin-bottom: 4rem;
-            box-shadow: var(--shadow-md);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .stat-item {
-            padding: 1rem;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--text-dark);
-            color: white;
-            padding: 3rem 0 1.5rem;
-            margin-top: 4rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-brand .logo {
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-brand .logo-text h1,
-        .footer-brand .logo-text p {
-            color: white;
-        }
-
-        .footer-description {
-            color: #9ca3af;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-column h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: white;
-        }
-
-        .footer-column a {
-            display: block;
-            color: #9ca3af;
-            text-decoration: none;
-            margin-bottom: 0.75rem;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-        }
-
-        .footer-column a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #374151;
-            padding-top: 1.5rem;
-            text-align: center;
-            color: #9ca3af;
-            font-size: 0.875rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .header .container {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-            
-            .nav {
-                gap: 1.5rem;
-            }
-            
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero p {
-                font-size: 1.125rem;
-            }
-            
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 15px;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn-primary,
-            .btn-secondary {
-                width: 100%;
-                max-width: 250px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-        }
-    </style>
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <link rel="canonical" href="https://picshift.me">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="header">
+
+    <!-- Desktop Navigation -->
+    <nav class="nav-desktop">
         <div class="container">
-            <div class="logo">
-                <div class="logo-icon">⚡</div>
-                <div class="logo-text">
-                    <h1>CalcFlow</h1>
-                    <p>Smart Calculations</p>
-                </div>
-            </div>
-            <nav class="nav">
-                <a href="index.html" class="nav-link active">Home</a>
-                <a href="calculators.html" class="nav-link">Calculators</a>
-                <a href="converters.html" class="nav-link">Converters</a>
-                <a href="tools.html" class="nav-link">Tools</a>
-            </nav>
-        </div>
-    </header>
-
-    <main class="main">
-        <section class="hero">
-            <div class="container">
-                <h1>Smart Calculations<br><span class="gradient-text">Made Simple</span></h1>
-                <p>Professional online calculators and tools for students, professionals, and everyday calculations. Fast, accurate, and easy to use.</p>
-                <div class="hero-buttons">
-                    <a href="calculators.html" class="btn-primary">Explore Calculators</a>
-                    <a href="tools.html" class="btn-secondary">View All Tools</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="tools-section">
-            <div class="container">
-                <div class="tools-header">
-                    <h2>Powerful Calculation Tools</h2>
-                    <p>Everything you need for mathematics, finance, health, and everyday calculations</p>
-                </div>
-
-                <div class="tools-grid">
-                    <div class="tool-card">
-                        <span class="tool-icon">🧮</span>
-                        <h3 class="tool-title">Calculators</h3>
-                        <p class="tool-description">Math, scientific, age, BMI, percentage, loan, interest, GPA, CGPA calculators for all your needs</p>
-                        <a href="calculators.html" class="tool-link">View Calculators →</a>
-                    </div>
-
-                    <div class="tool-card">
-                        <span class="tool-icon">💱</span>
-                        <h3 class="tool-title">Converters</h3>
-                        <p class="tool-description">Currency, weight, temperature, and unit converters with real-time data</p>
-                        <a href="converters.html" class="tool-link">View Converters →</a>
-                    </div>
-
-                    <div class="tool-card">
-                        <span class="tool-icon">🛠️</span>
-                        <h3 class="tool-title">Tools</h3>
-                        <p class="tool-description">Word counter, text analyzer, and productivity utilities for everyday tasks</p>
-                        <a href="tools.html" class="tool-link">View Tools →</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="stats-section">
-            <div class="container">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-number">15+</div>
-                        <div class="stat-label">Calculation Tools</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">50K+</div>
-                        <div class="stat-label">Monthly Users</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">100%</div>
-                        <div class="stat-label">Free to Use</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">24/7</div>
-                        <div class="stat-label">Available</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="logo">
-                        <div class="logo-icon">⚡</div>
-                        <div class="logo-text">
-                            <h3>CalcFlow</h3>
-                            <p>Smart Calculations</p>
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-crop-alt"></i></div>
+                <span>PicShift</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="compress-image.html">Compress</a></li>
+                <li><a href="resize-image.html">Resize</a></li>
+                <li><a href="crop-image.html">Crop</a></li>
+                <li><a href="jpg-to-png.html">Jpg to Png</a></li>
+                <li class="dropdown">
+                    <a href="#">More Tools <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-grid">
+                            <div class="dropdown-category">
+                                <h4>CONVERTERS</h4>
+                                <a href="webp-to-png.html">WebP to PNG</a>
+                                <a href="to-webp.html">Image to WebP</a>
+                                <a href="to-base64.html">Image to Base64</a>
+                                <a href="base64-to-image.html">Base64 to Image</a>
+                            </div>
+                            <div class="dropdown-category">
+                                <h4>ENHANCERS</h4>
+                                <a href="image-to-hd.html">Image to HD</a>
+                                <a href="blur.html">Blur Effect</a>
+                                <a href="brightness.html">Brightness</a>
+                                <a href="grayscale.html">Grayscale</a>
+                            </div>
+                            <div class="dropdown-category">
+                                <h4>PDF TOOLS</h4>
+                                <a href="image-to-pdf.html">Image to PDF</a>
+                                <a href="pdf-to-image.html">PDF to Image</a>
+                            </div>
+                            <div class="dropdown-category">
+                                <h4>UTILITIES</h4>
+                                <a href="rotate.html">Rotate Image</a>
+                                <a href="watermark.html">Add Watermark</a>
+                                <a href="png-to-jpg.html">PNG to JPG</a>
+                            </div>
                         </div>
                     </div>
-                    <p class="footer-description">Professional online calculators and tools for everyday needs. A product of Webora Technologies.</p>
-                </div>
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>Tools</h4>
-                        <a href="calculators.html">Calculators</a>
-                        <a href="converters.html">Converters</a>
-                        <a href="tools.html">Tools</a>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Company</h4>
-                        <a href="about.html">About</a>
-                        <a href="privacy.html">Privacy</a>
-                        <a href="contact.html">Contact</a>
-                    </div>
-                </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <nav class="nav-mobile">
+        <div class="mobile-header">
+            <a href="index.html" class="mobile-logo">
+                <div class="mobile-logo-icon"><i class="fas fa-crop-alt"></i></div>
+                <span>PicShift</span>
+            </a>
+            <div class="mobile-menu-icons">
+                <a href="index.html" class="active"><i class="fas fa-home"></i></a>
+                <a href="compress-image.html"><i class="fas fa-compress-alt"></i></a>
+                <a href="resize-image.html"><i class="fas fa-expand-alt"></i></a>
+                <a href="crop-image.html"><i class="fas fa-crop"></i></a>
+                <a href="about.html"><i class="fas fa-info-circle"></i></a>
             </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <section class="hero">
+            <div class="hero-badge">⚡ 100% Browser Based</div>
+            <h1>Professional Image Tools<br>That Work in Your Browser</h1>
+            <p>Compress, resize, convert, crop, watermark & more. No upload. No server. 100% private.</p>
+        </section>
+
+        <div class="stats-bar">
+            <div class="stat-card"><div class="stat-number">17+</div><div class="stat-label">Professional Tools</div></div>
+            <div class="stat-card"><div class="stat-number">100%</div><div class="stat-label">Client Side</div></div>
+            <div class="stat-card"><div class="stat-number">🔒</div><div class="stat-label">Zero Upload</div></div>
+        </div>
+
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search tools... compress, resize, convert...">
+        </div>
+
+        <div class="tool-grid" id="toolsGrid">
+            <a href="compress-image.html" class="tool-card"><div class="tool-icon"><i class="fas fa-compress-alt"></i></div><h3>Compress Image</h3><p>Reduce file size while maintaining quality</p></a>
+            <a href="resize-image.html" class="tool-card"><div class="tool-icon"><i class="fas fa-expand-alt"></i></div><h3>Resize Image</h3><p>Change dimensions with aspect ratio lock</p></a>
+            <a href="crop-image.html" class="tool-card"><div class="tool-icon"><i class="fas fa-crop"></i></div><h3>Crop Image</h3><p>Cut and trim to focus on what matters</p></a>
+            <a href="jpg-to-png.html" class="tool-card"><div class="tool-icon"><i class="fas fa-image"></i></div><h3>JPG to PNG</h3><p>Convert JPG to PNG with transparency</p></a>
+            <a href="png-to-jpg.html" class="tool-card"><div class="tool-icon"><i class="fas fa-file-image"></i></div><h3>PNG to JPG</h3><p>Convert PNG to compressed JPG format</p></a>
+            <a href="webp-to-png.html" class="tool-card"><div class="tool-icon"><i class="fas fa-globe"></i></div><h3>WebP to PNG</h3><p>Convert WebP images to standard PNG</p></a>
+            <a href="to-webp.html" class="tool-card"><div class="tool-icon"><i class="fas fa-exchange-alt"></i></div><h3>Image to WebP</h3><p>Convert any image to modern WebP format</p></a>
+            <a href="image-to-hd.html" class="tool-card"><div class="tool-icon"><i class="fas fa-star"></i></div><h3>Image to HD</h3><p>Upscale and enhance image quality</p></a>
+            <a href="watermark.html" class="tool-card"><div class="tool-icon"><i class="fas fa-watermark"></i></div><h3>Add Watermark</h3><p>Protect photos with text or logo overlay</p></a>
+            <a href="rotate.html" class="tool-card"><div class="tool-icon"><i class="fas fa-undo-alt"></i></div><h3>Rotate Image</h3><p>Flip or rotate to any angle</p></a>
+            <a href="grayscale.html" class="tool-card"><div class="tool-icon"><i class="fas fa-adjust"></i></div><h3>Grayscale</h3><p>Convert color photos to black and white</p></a>
+            <a href="blur.html" class="tool-card"><div class="tool-icon"><i class="fas fa-tint"></i></div><h3>Blur Effect</h3><p>Apply soft blur filters to images</p></a>
+            <a href="brightness.html" class="tool-card"><div class="tool-icon"><i class="fas fa-sun"></i></div><h3>Brightness</h3><p>Adjust light levels and contrast</p></a>
+            <a href="image-to-pdf.html" class="tool-card"><div class="tool-icon"><i class="fas fa-file-pdf"></i></div><h3>Image to PDF</h3><p>Convert images to PDF document</p></a>
+            <a href="pdf-to-image.html" class="tool-card"><div class="tool-icon"><i class="fas fa-file-pdf"></i></div><h3>PDF to Image</h3><p>Extract pages from PDF as images</p></a>
+            <a href="to-base64.html" class="tool-card"><div class="tool-icon"><i class="fas fa-code"></i></div><h3>Image to Base64</h3><p>Convert images to Base64 strings</p></a>
+            <a href="base64-to-image.html" class="tool-card"><div class="tool-icon"><i class="fas fa-code"></i></div><h3>Base64 to Image</h3><p>Decode Base64 back to images</p></a>
+        </div>
+
+        <div class="trust-badge">
+            <h3>🔒 100% Private & Secure</h3>
+            <p>All image processing happens directly in your browser. Your files never leave your device.</p>
+            <div class="feature-list">
+                <span><i class="fas fa-bolt"></i> No Registration</span>
+                <span><i class="fas fa-lock"></i> Zero Upload</span>
+                <span><i class="fas fa-database"></i> No Storage</span>
+                <span><i class="fas fa-gem"></i> 100% Free</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <ul class="footer-links">
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms of Service</a></li>
+            </ul>
             <div class="footer-bottom">
-                <p>&copy; 2026 CalcFlow. A product of Webora Technologies. All rights reserved.</p>
+                <p>&copy; 2026 PicShift | A product of Webora Technologies. All processing done locally in your browser.</p>
+                <p style="margin-top: 0.3rem; font-size: 0.65rem;">100% Free • No Registration • No Upload • Private & Secure</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const toolCards = document.querySelectorAll('.tool-card');
+        let noResultsMsg = null;
+        
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const term = this.value.toLowerCase().trim();
+                let visibleCount = 0;
+                
+                toolCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    if (title.includes(term) || term === '') {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
                 });
+                
+                const grid = document.getElementById('toolsGrid');
+                if (visibleCount === 0 && term !== '') {
+                    if (!noResultsMsg) {
+                        noResultsMsg = document.createElement('div');
+                        noResultsMsg.className = 'no-results';
+                        noResultsMsg.innerHTML = '<i class="fas fa-search"></i> No tools found matching "<strong>' + term.replace(/[&<>]/g, '') + '</strong>"';
+                        grid.parentNode.insertBefore(noResultsMsg, grid.nextSibling);
+                    }
+                    noResultsMsg.style.display = 'block';
+                } else if (noResultsMsg) {
+                    noResultsMsg.style.display = 'none';
+                }
             });
-        });
+        }
     </script>
 </body>
 </html>

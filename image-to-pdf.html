@@ -1,0 +1,542 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Image to PDF - Convert Images | PicShift</title>
+    <meta name="description" content="Convert images to PDF online for free. Combine multiple images into one PDF or download each as a separate PDF. No upload, 100% private.">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8FAFC;
+            color: #0F172A;
+            line-height: 1.5;
+        }
+        .navbar {
+            background: #299ACE;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: 800;
+            font-size: 1.4rem;
+        }
+        .logo i { font-size: 1.8rem; }
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.2); }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background: white;
+            width: 560px;
+            border-radius: 12px;
+            padding: 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            z-index: 1001;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px);
+        }
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .dropdown-category h4 {
+            color: #64748B;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+        .dropdown-category a {
+            display: block;
+            color: #334155;
+            padding: 0.4rem 0;
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+        .dropdown-category a:hover { color: #299ACE; }
+        
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .tool-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #E2E8F0;
+        }
+        .tool-status {
+            display: inline-block;
+            background: #E0F2FE;
+            color: #299ACE;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .page-title { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .page-subtitle { color: #64748B; margin-bottom: 2rem; }
+        
+        .upload-area {
+            border: 2px dashed #299ACE;
+            border-radius: 24px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #F0F9FF;
+            margin-bottom: 1.5rem;
+        }
+        .upload-area:hover, .upload-area.dragover {
+            background: #E0F2FE;
+            border-color: #1E7BA3;
+        }
+        .upload-icon { font-size: 3rem; color: #299ACE; margin-bottom: 1rem; }
+        .upload-title { font-weight: 600; font-size: 1rem; margin-bottom: 0.5rem; }
+        .upload-subtitle { font-size: 0.85rem; color: #64748B; }
+        
+        .image-list {
+            margin: 1rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 0.5rem;
+            background: #F8FAFC;
+        }
+        .image-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            border-bottom: 1px solid #E2E8F0;
+            background: white;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+        }
+        .image-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .image-item .info {
+            flex: 1;
+        }
+        .image-item .name {
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        .image-item .size {
+            font-size: 0.7rem;
+            color: #64748B;
+        }
+        .image-item .remove-btn {
+            background: #FEE2E2;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #DC2626;
+            transition: 0.2s;
+        }
+        .image-item .remove-btn:hover {
+            background: #DC2626;
+            color: white;
+        }
+        .image-item .pdf-single-btn {
+            background: #299ACE;
+            border: none;
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            cursor: pointer;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .image-item .pdf-single-btn:hover {
+            background: #1E7BA3;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+        .btn-primary { background: #299ACE; color: white; }
+        .btn-primary:hover { background: #1E7BA3; transform: translateY(-2px); }
+        .btn-success { background: #10B981; color: white; }
+        .btn-success:hover { background: #059669; }
+        .btn-secondary { background: #F1F5F9; color: #334155; border: 1px solid #E2E8F0; }
+        
+        .how-to {
+            background: #F0F9FF;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-left: 4px solid #299ACE;
+        }
+        .trust-badge { background: #F1F5F9; padding: 1.5rem; border-radius: 20px; text-align: center; margin: 2rem 0; }
+        .related-tools-list { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+        .related-tool-link {
+            background: white;
+            border: 1px solid #E2E8F0;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #0F172A;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer { background: #299ACE; color: white; text-align: center; padding: 2rem; margin-top: 2rem; }
+        .footer a { color: white; text-decoration: none; margin: 0 1rem; }
+        .error-message, .success-message { padding: 0.8rem; border-radius: 12px; margin: 1rem 0; text-align: center; }
+        .error-message { background: #FEE2E2; color: #DC2626; }
+        .success-message { background: #DCFCE7; color: #16A34A; }
+        
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; text-align: center; }
+            .dropdown-menu { position: fixed; left: 1rem; right: 1rem; width: auto; top: auto; bottom: 70px; }
+            .image-item { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="logo"><i class="fas fa-crop-alt"></i> PicShift</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="compress-image.html">Compress</a></li>
+        <li><a href="resize-image.html">Resize</a></li>
+        <li><a href="crop-image.html">Crop</a></li>
+        <li><a href="jpg-to-png.html">Jpg-Png</a></li>
+        <li class="dropdown">
+            <a href="#" class="active">More Tools <i class="fas fa-chevron-down"></i></a>
+            <div class="dropdown-menu">
+                <div class="dropdown-grid">
+                    <div class="dropdown-category"><h4>CONVERTERS</h4><a href="webp-to-png.html">WebP to PNG</a><a href="to-webp.html">Image to WebP</a><a href="to-base64.html">Image to Base64</a><a href="base64-to-image.html">Base64 to Image</a></div>
+                    <div class="dropdown-category"><h4>ENHANCERS</h4><a href="image-to-hd.html">Image to HD</a><a href="blur.html">Blur Effect</a><a href="brightness.html">Brightness</a><a href="grayscale.html">Grayscale</a></div>
+                    <div class="dropdown-category"><h4>PDF TOOLS</h4><a href="image-to-pdf.html">Image to PDF</a><a href="pdf-to-image.html">PDF to Image</a></div>
+                    <div class="dropdown-category"><h4>UTILITIES</h4><a href="rotate.html">Rotate Image</a><a href="watermark.html">Add Watermark</a><a href="png-to-jpg.html">PNG to JPG</a></div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<main class="main-container">
+    <div class="tool-card">
+        <div class="tool-status">⚡ 100% Client-Side | No Upload</div>
+        <h1 class="page-title">Image to PDF</h1>
+        <p class="page-subtitle">Convert images to PDF – combine all or download each separately.</p>
+
+        <div id="uploadArea" class="upload-area">
+            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="upload-title">Drop images here or click to browse</div>
+            <div class="upload-subtitle">Supports JPG, PNG, WebP, GIF | Multiple files allowed | Max 50MB total</div>
+            <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+        </div>
+
+        <div id="imageListContainer" style="display: none;">
+            <div class="image-list" id="imageList"></div>
+            <div class="btn-group">
+                <button id="singlePdfBtn" class="btn btn-primary"><i class="fas fa-file-pdf"></i> Download as Single PDF</button>
+                <button id="allSeparateBtn" class="btn btn-success"><i class="fas fa-download"></i> Download All as Separate PDFs</button>
+                <button id="clearBtn" class="btn btn-secondary"><i class="fas fa-trash-alt"></i> Clear All</button>
+            </div>
+        </div>
+
+        <div id="messageArea"></div>
+
+        <div class="how-to">
+            <h3><i class="fas fa-info-circle"></i> How to use</h3>
+            <ul style="margin-left: 1.5rem;">
+                <li>1. Select one or more images (drag & drop or click).</li>
+                <li>2. Images appear in the list – you can remove any or download a single PDF.</li>
+                <li>3. Choose <strong>Single PDF</strong> (all images combined) or <strong>All Separate PDFs</strong> (each image as its own PDF).</li>
+                <li>4. For individual images, click the "PDF" button next to any image.</li>
+            </ul>
+        </div>
+
+        <div class="trust-badge">
+            <h3><i class="fas fa-lock"></i> 100% Private & Secure</h3>
+            <p>All processing happens in your browser. No upload, no server.</p>
+        </div>
+
+        <div class="related-tools">
+            <h3>Related Tools</h3>
+            <div class="related-tools-list">
+                <a href="pdf-to-image.html" class="related-tool-link"><i class="fas fa-file-pdf"></i> PDF to Image</a>
+                <a href="compress-image.html" class="related-tool-link"><i class="fas fa-compress-alt"></i> Compress</a>
+                <a href="jpg-to-png.html" class="related-tool-link"><i class="fas fa-image"></i> JPG to PNG</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2026 PicShift | All processing done locally</p>
+    <p><a href="about.html">About</a> | <a href="contact.html">Contact</a> | <a href="privacy-policy.html">Privacy</a> | <a href="terms.html">Terms</a></p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const imageListContainer = document.getElementById('imageListContainer');
+    const imageList = document.getElementById('imageList');
+    const singlePdfBtn = document.getElementById('singlePdfBtn');
+    const allSeparateBtn = document.getElementById('allSeparateBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const messageDiv = document.getElementById('messageArea');
+
+    let images = []; // store { file, dataUrl, name, size }
+
+    function showMessage(msg, type) {
+        messageDiv.innerHTML = `<div class="${type}-message">${msg}</div>`;
+        setTimeout(() => messageDiv.innerHTML = '', 4000);
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    // Convert an image element to PDF blob
+    async function imageToPdfBlob(imgElement) {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait'
+        });
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = imgElement.width;
+        const imgHeight = imgElement.height;
+        const ratio = imgWidth / imgHeight;
+        let drawWidth = pageWidth - 20;
+        let drawHeight = drawWidth / ratio;
+        if (drawHeight > pageHeight - 20) {
+            drawHeight = pageHeight - 20;
+            drawWidth = drawHeight * ratio;
+        }
+        const x = (pageWidth - drawWidth) / 2;
+        const y = (pageHeight - drawHeight) / 2;
+        pdf.addImage(imgElement, 'JPEG', x, y, drawWidth, drawHeight);
+        return pdf.output('blob');
+    }
+
+    // Download a single PDF from an image object
+    async function downloadSinglePdf(imageObj, index) {
+        const img = await new Promise((resolve) => {
+            const imgEl = new Image();
+            imgEl.onload = () => resolve(imgEl);
+            imgEl.src = imageObj.dataUrl;
+        });
+        const pdfBlob = await imageToPdfBlob(img);
+        const link = document.createElement('a');
+        const baseName = imageObj.name.replace(/\.[^/.]+$/, '');
+        link.download = `${baseName}.pdf`;
+        link.href = URL.createObjectURL(pdfBlob);
+        link.click();
+        URL.revokeObjectURL(link.href);
+        showMessage(`Downloaded: ${baseName}.pdf`, 'success');
+    }
+
+    // Render image list with individual PDF buttons
+    function renderImageList() {
+        if (images.length === 0) {
+            imageListContainer.style.display = 'none';
+            uploadArea.style.display = 'block';
+            return;
+        }
+        uploadArea.style.display = 'none';
+        imageListContainer.style.display = 'block';
+        imageList.innerHTML = '';
+        images.forEach((img, index) => {
+            const div = document.createElement('div');
+            div.className = 'image-item';
+            div.innerHTML = `
+                <img src="${img.dataUrl}" alt="${img.name}">
+                <div class="info">
+                    <div class="name">${img.name}</div>
+                    <div class="size">${formatFileSize(img.size)}</div>
+                </div>
+                <button class="pdf-single-btn" data-index="${index}"><i class="fas fa-file-pdf"></i> PDF</button>
+                <button class="remove-btn" data-index="${index}"><i class="fas fa-times"></i></button>
+            `;
+            imageList.appendChild(div);
+        });
+        // Individual PDF buttons
+        document.querySelectorAll('.pdf-single-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const idx = parseInt(btn.dataset.index);
+                await downloadSinglePdf(images[idx], idx);
+            });
+        });
+        // Remove buttons
+        document.querySelectorAll('.remove-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idx = parseInt(btn.dataset.index);
+                images.splice(idx, 1);
+                renderImageList();
+                showMessage('Image removed', 'success');
+            });
+        });
+    }
+
+    function handleFiles(files) {
+        let totalSize = 0;
+        for (let img of images) totalSize += img.size;
+        for (let file of files) {
+            if (!file.type.startsWith('image/')) {
+                showMessage(`Skipped: ${file.name} is not an image`, 'error');
+                continue;
+            }
+            if (file.size > 50 * 1024 * 1024) {
+                showMessage(`Skipped: ${file.name} exceeds 50MB`, 'error');
+                continue;
+            }
+            totalSize += file.size;
+            if (totalSize > 50 * 1024 * 1024) {
+                showMessage('Total size exceeds 50MB. Please remove some images.', 'error');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                images.push({
+                    file: file,
+                    dataUrl: e.target.result,
+                    name: file.name,
+                    size: file.size
+                });
+                renderImageList();
+                showMessage(`Added: ${file.name}`, 'success');
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    uploadArea.onclick = () => fileInput.click();
+    fileInput.onchange = (e) => {
+        if (e.target.files.length) handleFiles(Array.from(e.target.files));
+        fileInput.value = '';
+    };
+    uploadArea.ondragover = (e) => e.preventDefault();
+    uploadArea.ondrop = (e) => {
+        e.preventDefault();
+        if (e.dataTransfer.files.length) handleFiles(Array.from(e.dataTransfer.files));
+    };
+
+    clearBtn.onclick = () => {
+        images = [];
+        renderImageList();
+        showMessage('All images cleared', 'success');
+    };
+
+    // Single PDF combining all images
+    singlePdfBtn.onclick = async () => {
+        if (images.length === 0) {
+            showMessage('Please add at least one image', 'error');
+            return;
+        }
+        showMessage('Generating single PDF...', 'success');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        
+        for (let i = 0; i < images.length; i++) {
+            if (i > 0) pdf.addPage();
+            const img = await new Promise((resolve) => {
+                const imgEl = new Image();
+                imgEl.onload = () => resolve(imgEl);
+                imgEl.src = images[i].dataUrl;
+            });
+            const ratio = img.width / img.height;
+            let drawWidth = pageWidth - 20;
+            let drawHeight = drawWidth / ratio;
+            if (drawHeight > pageHeight - 20) {
+                drawHeight = pageHeight - 20;
+                drawWidth = drawHeight * ratio;
+            }
+            const x = (pageWidth - drawWidth) / 2;
+            const y = (pageHeight - drawHeight) / 2;
+            pdf.addImage(img, 'JPEG', x, y, drawWidth, drawHeight);
+        }
+        pdf.save(`combined_${Date.now()}.pdf`);
+        showMessage('Single PDF downloaded!', 'success');
+    };
+
+    // Download all images as separate PDFs (one after another)
+    allSeparateBtn.onclick = async () => {
+        if (images.length === 0) {
+            showMessage('Please add at least one image', 'error');
+            return;
+        }
+        showMessage(`Preparing ${images.length} PDF(s)... They will download one by one.`, 'success');
+        for (let i = 0; i < images.length; i++) {
+            await downloadSinglePdf(images[i], i);
+            // Small delay to avoid browser blocking multiple downloads
+            await new Promise(r => setTimeout(r, 500));
+        }
+        showMessage('All PDFs downloaded!', 'success');
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,473 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Image to HD - Upscale Image Quality | PicShift</title>
+    <meta name="description" content="Upscale images to HD quality online for free. Double the resolution with simple scaling. No upload, 100% private.">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8FAFC;
+            color: #0F172A;
+            line-height: 1.5;
+        }
+        .navbar {
+            background: #299ACE;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: 800;
+            font-size: 1.4rem;
+        }
+        .logo i { font-size: 1.8rem; }
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.2); }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background: white;
+            width: 560px;
+            border-radius: 12px;
+            padding: 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            z-index: 1001;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px);
+        }
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .dropdown-category h4 {
+            color: #64748B;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+        .dropdown-category a {
+            display: block;
+            color: #334155;
+            padding: 0.4rem 0;
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+        .dropdown-category a:hover { color: #299ACE; }
+        
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .tool-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #E2E8F0;
+        }
+        .tool-status {
+            display: inline-block;
+            background: #E0F2FE;
+            color: #299ACE;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .page-title { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .page-subtitle { color: #64748B; margin-bottom: 2rem; }
+        
+        .upload-area {
+            border: 2px dashed #299ACE;
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #F0F9FF;
+            margin-bottom: 1.5rem;
+        }
+        .upload-area:hover, .upload-area.dragover {
+            background: #E0F2FE;
+            border-color: #1E7BA3;
+        }
+        .upload-icon { font-size: 3rem; color: #299ACE; margin-bottom: 1rem; }
+        .upload-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .upload-subtitle { font-size: 0.85rem; color: #64748B; }
+        
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+        .preview-card {
+            flex: 1;
+            min-width: 250px;
+            background: #F8FAFC;
+            border-radius: 20px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .preview-card img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 12px;
+            margin: 0.8rem 0;
+            background: white;
+        }
+        .info-badge {
+            background: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .scale-control {
+            margin: 1rem 0;
+            text-align: center;
+        }
+        .scale-control label {
+            font-weight: 600;
+            margin-right: 0.5rem;
+            color: #299ACE;
+        }
+        .scale-control select {
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #E2E8F0;
+            background: white;
+            font-family: inherit;
+            cursor: pointer;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+        .btn-success { background: #10B981; color: white; }
+        .btn-success:hover { background: #059669; transform: translateY(-2px); }
+        .btn-secondary { background: #F1F5F9; color: #334155; border: 1px solid #E2E8F0; }
+        
+        .how-to {
+            background: #F0F9FF;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-left: 4px solid #299ACE;
+        }
+        .trust-badge { background: #F1F5F9; padding: 1.5rem; border-radius: 20px; text-align: center; margin: 2rem 0; }
+        .related-tools-list { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+        .related-tool-link {
+            background: white;
+            border: 1px solid #E2E8F0;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #0F172A;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer { background: #299ACE; color: white; text-align: center; padding: 2rem; margin-top: 2rem; }
+        .footer a { color: white; text-decoration: none; margin: 0 1rem; }
+        .error-message, .success-message { padding: 0.8rem; border-radius: 12px; margin: 1rem 0; text-align: center; }
+        .error-message { background: #FEE2E2; color: #DC2626; }
+        .success-message { background: #DCFCE7; color: #16A34A; }
+        
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; text-align: center; }
+            .dropdown-menu { position: fixed; left: 1rem; right: 1rem; width: auto; top: auto; bottom: 70px; }
+            .preview-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="logo"><i class="fas fa-crop-alt"></i> PicShift</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="compress-image.html">Compress</a></li>
+        <li><a href="resize-image.html">Resize</a></li>
+        <li><a href="crop-image.html">Crop</a></li>
+        <li><a href="jpg-to-png.html">Jpg-Png</a></li>
+        <li class="dropdown">
+            <a href="#" class="active">More Tools <i class="fas fa-chevron-down"></i></a>
+            <div class="dropdown-menu">
+                <div class="dropdown-grid">
+                    <div class="dropdown-category">
+                        <h4>CONVERTERS</h4>
+                        <a href="webp-to-png.html">WebP to PNG</a>
+                        <a href="to-webp.html">Image to WebP</a>
+                        <a href="to-base64.html">Image to Base64</a>
+                        <a href="base64-to-image.html">Base64 to Image</a>
+                    </div>
+                    <div class="dropdown-category">
+                        <h4>ENHANCERS</h4>
+                        <a href="image-to-hd.html">Image to HD</a>
+                        <a href="blur.html">Blur Effect</a>
+                        <a href="brightness.html">Brightness</a>
+                        <a href="grayscale.html">Grayscale</a>
+                    </div>
+                    <div class="dropdown-category">
+                        <h4>PDF TOOLS</h4>
+                        <a href="image-to-pdf.html">Image to PDF</a>
+                        <a href="pdf-to-image.html">PDF to Image</a>
+                    </div>
+                    <div class="dropdown-category">
+                        <h4>UTILITIES</h4>
+                        <a href="rotate.html">Rotate Image</a>
+                        <a href="watermark.html">Add Watermark</a>
+                        <a href="png-to-jpg.html">PNG to JPG</a>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<main class="main-container">
+    <div class="tool-card">
+        <div class="tool-status">⚡ 100% Client-Side | No Upload</div>
+        <h1 class="page-title">Image to HD Upscaler</h1>
+        <p class="page-subtitle">Automatically upscale your images to higher resolution. Adjust factor anytime.</p>
+
+        <div id="uploadArea" class="upload-area">
+            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="upload-title">Drop your image here or click to browse</div>
+            <div class="upload-subtitle">Supports JPG, PNG, WebP, GIF | Max 50MB</div>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        </div>
+
+        <div id="toolContainer" style="display: none;">
+            <div class="scale-control">
+                <label>Upscale Factor:</label>
+                <select id="scaleFactor">
+                    <option value="2">2x (Double Size)</option>
+                    <option value="3">3x (Triple Size)</option>
+                    <option value="4">4x (Quadruple Size)</option>
+                </select>
+            </div>
+            <div class="preview-container">
+                <div class="preview-card">
+                    <h4><i class="fas fa-image"></i> Original</h4>
+                    <img id="originalPreview" alt="Original">
+                    <div id="originalInfo" class="info-badge"></div>
+                </div>
+                <div class="preview-card">
+                    <h4><i class="fas fa-star"></i> Upscaled (HD)</h4>
+                    <img id="upscaledPreview" alt="Upscaled">
+                    <div id="upscaledInfo" class="info-badge"></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button id="downloadBtn" class="btn btn-success" style="display: none;"><i class="fas fa-download"></i> Download HD Image</button>
+                <button id="resetBtn" class="btn btn-secondary"><i class="fas fa-trash-alt"></i> Clear All</button>
+            </div>
+        </div>
+
+        <div id="messageArea"></div>
+
+        <div class="how-to">
+            <h3><i class="fas fa-info-circle"></i> How to use</h3>
+            <ul style="margin-left: 1.5rem;">
+                <li>1. Upload an image – the HD version is generated instantly.</li>
+                <li>2. Change the upscale factor to see the result update live.</li>
+                <li>3. Download your HD image.</li>
+            </ul>
+            <p style="margin-top: 0.5rem;">Note: Simple scaling enlarges pixels; for best results use high-quality originals.</p>
+        </div>
+
+        <div class="trust-badge">
+            <h3><i class="fas fa-lock"></i> 100% Private & Secure</h3>
+            <p>All processing happens in your browser. No upload, no server.</p>
+        </div>
+
+        <div class="related-tools">
+            <h3>Related Tools</h3>
+            <div class="related-tools-list">
+                <a href="compress-image.html" class="related-tool-link"><i class="fas fa-compress-alt"></i> Compress</a>
+                <a href="resize-image.html" class="related-tool-link"><i class="fas fa-expand-alt"></i> Resize</a>
+                <a href="brightness.html" class="related-tool-link"><i class="fas fa-sun"></i> Brightness</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2026 PicShift | All processing done locally</p>
+    <p><a href="about.html">About</a> | <a href="contact.html">Contact</a> | <a href="privacy-policy.html">Privacy</a> | <a href="terms.html">Terms</a></p>
+</footer>
+
+<script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const toolContainer = document.getElementById('toolContainer');
+    const originalPreview = document.getElementById('originalPreview');
+    const upscaledPreview = document.getElementById('upscaledPreview');
+    const originalInfo = document.getElementById('originalInfo');
+    const upscaledInfo = document.getElementById('upscaledInfo');
+    const scaleFactorSelect = document.getElementById('scaleFactor');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const messageDiv = document.getElementById('messageArea');
+
+    let originalImage = new Image();
+    let upscaledDataUrl = null;
+    let originalFile = null;
+
+    function showMessage(msg, type) {
+        messageDiv.innerHTML = `<div class="${type}-message">${msg}</div>`;
+        setTimeout(() => messageDiv.innerHTML = '', 3000);
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
+
+    // Perform upscaling with current factor
+    function performUpscale() {
+        if (!originalImage.complete || originalImage.width === 0) return;
+        const factor = parseInt(scaleFactorSelect.value);
+        const newWidth = originalImage.width * factor;
+        const newHeight = originalImage.height * factor;
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
+        
+        upscaledDataUrl = canvas.toDataURL('image/png');
+        upscaledPreview.src = upscaledDataUrl;
+        const upscaledSize = Math.round((upscaledDataUrl.length * 3) / 4);
+        upscaledInfo.innerHTML = `${newWidth} x ${newHeight} • ${formatFileSize(upscaledSize)}`;
+        downloadBtn.style.display = 'inline-flex';
+    }
+
+    // Handle file upload
+    function handleFile(file) {
+        if (!file.type.startsWith('image/')) {
+            showMessage('Please select an image file', 'error');
+            return;
+        }
+        if (file.size > 50 * 1024 * 1024) {
+            showMessage('File too large (max 50MB)', 'error');
+            return;
+        }
+        originalFile = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            originalImage.onload = () => {
+                originalPreview.src = e.target.result;
+                originalInfo.innerHTML = `${originalImage.width} x ${originalImage.height} • ${formatFileSize(file.size)}`;
+                uploadArea.style.display = 'none';
+                toolContainer.style.display = 'block';
+                // Initial upscale
+                performUpscale();
+                showMessage('Image upscaled automatically! Change factor to update.', 'success');
+            };
+            originalImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Event listeners
+    uploadArea.onclick = () => fileInput.click();
+    fileInput.onchange = (e) => e.target.files[0] && handleFile(e.target.files[0]);
+    uploadArea.ondragover = (e) => e.preventDefault();
+    uploadArea.ondrop = (e) => {
+        e.preventDefault();
+        if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    };
+    scaleFactorSelect.addEventListener('change', () => {
+        if (originalImage.complete && originalImage.width > 0) {
+            performUpscale();
+            showMessage(`Upscaled to ${scaleFactorSelect.value}x`, 'success');
+        }
+    });
+
+    function downloadHD() {
+        if (!upscaledDataUrl) return;
+        const link = document.createElement('a');
+        link.download = `hd_upscaled_${Date.now()}.png`;
+        link.href = upscaledDataUrl;
+        link.click();
+        showMessage('HD image downloaded!', 'success');
+    }
+
+    function reset() {
+        originalImage = new Image();
+        upscaledDataUrl = null;
+        originalFile = null;
+        toolContainer.style.display = 'none';
+        uploadArea.style.display = 'block';
+        fileInput.value = '';
+        downloadBtn.style.display = 'none';
+        messageDiv.innerHTML = '';
+        originalPreview.src = '';
+        upscaledPreview.src = '';
+        scaleFactorSelect.value = '2';
+    }
+
+    downloadBtn.onclick = downloadHD;
+    resetBtn.onclick = reset;
+</script>
+</body>
+</html>

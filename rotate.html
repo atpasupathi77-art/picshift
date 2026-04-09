@@ -1,0 +1,521 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Rotate Image - Flip & Rotate | PicShift</title>
+    <meta name="description" content="Rotate and flip images online for free. Rotate any angle, 90°, 180°, 270°, flip horizontally or vertically. No upload, 100% private.">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8FAFC;
+            color: #0F172A;
+            line-height: 1.5;
+        }
+        .navbar {
+            background: #299ACE;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: 800;
+            font-size: 1.4rem;
+        }
+        .logo i { font-size: 1.8rem; }
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.2); }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-menu {
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background: white;
+            width: 560px;
+            border-radius: 12px;
+            padding: 1.2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+            z-index: 1001;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px);
+        }
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .dropdown-category h4 {
+            color: #64748B;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+        }
+        .dropdown-category a {
+            display: block;
+            color: #334155;
+            padding: 0.4rem 0;
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+        .dropdown-category a:hover { color: #299ACE; }
+        
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .tool-card {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #E2E8F0;
+        }
+        .tool-status {
+            display: inline-block;
+            background: #E0F2FE;
+            color: #299ACE;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .page-title { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .page-subtitle { color: #64748B; margin-bottom: 2rem; }
+        
+        .upload-area {
+            border: 2px dashed #299ACE;
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #F0F9FF;
+            margin-bottom: 1.5rem;
+        }
+        .upload-area:hover, .upload-area.dragover {
+            background: #E0F2FE;
+            border-color: #1E7BA3;
+        }
+        .upload-icon { font-size: 3rem; color: #299ACE; margin-bottom: 1rem; }
+        .upload-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .upload-subtitle { font-size: 0.85rem; color: #64748B; }
+        
+        /* Preset buttons row */
+        .preset-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .preset-btn {
+            background: white;
+            border: 1px solid #E2E8F0;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+        }
+        .preset-btn:hover {
+            border-color: #299ACE;
+            color: #299ACE;
+        }
+        
+        .preview-area {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        .preview-area img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 12px;
+            background: white;
+            border: 1px solid #E2E8F0;
+        }
+        .info-badge {
+            background: #F8FAFC;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+        
+        /* Angle control placed below image */
+        .angle-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            background: #F8FAFC;
+            padding: 1rem;
+            border-radius: 40px;
+            margin: 1rem 0;
+        }
+        .angle-control label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #299ACE;
+        }
+        .angle-control input[type="range"] {
+            width: 250px;
+            height: 5px;
+            -webkit-appearance: none;
+            background: #E2E8F0;
+            border-radius: 5px;
+        }
+        .angle-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #299ACE;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .angle-control input[type="number"] {
+            width: 70px;
+            padding: 0.4rem;
+            border: 1px solid #E2E8F0;
+            border-radius: 30px;
+            text-align: center;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+        .btn-success { background: #10B981; color: white; }
+        .btn-success:hover { background: #059669; transform: translateY(-2px); }
+        .btn-secondary { background: #F1F5F9; color: #334155; border: 1px solid #E2E8F0; }
+        
+        .how-to {
+            background: #F0F9FF;
+            border-radius: 20px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-left: 4px solid #299ACE;
+        }
+        .trust-badge { background: #F1F5F9; padding: 1.5rem; border-radius: 20px; text-align: center; margin: 2rem 0; }
+        .related-tools-list { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+        .related-tool-link {
+            background: white;
+            border: 1px solid #E2E8F0;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #0F172A;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer { background: #299ACE; color: white; text-align: center; padding: 2rem; margin-top: 2rem; }
+        .footer a { color: white; text-decoration: none; margin: 0 1rem; }
+        .error-message, .success-message { padding: 0.8rem; border-radius: 12px; margin: 1rem 0; text-align: center; }
+        .error-message { background: #FEE2E2; color: #DC2626; }
+        .success-message { background: #DCFCE7; color: #16A34A; }
+        
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; text-align: center; }
+            .dropdown-menu { position: fixed; left: 1rem; right: 1rem; width: auto; top: auto; bottom: 70px; }
+            .angle-control { flex-direction: column; align-items: stretch; }
+            .angle-control input[type="range"] { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="logo"><i class="fas fa-crop-alt"></i> PicShift</a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="compress-image.html">Compress</a></li>
+        <li><a href="resize-image.html">Resize</a></li>
+        <li><a href="crop-image.html">Crop</a></li>
+        <li><a href="jpg-to-png.html">Jpg-Png</a></li>
+        <li class="dropdown">
+            <a href="#" class="active">More Tools <i class="fas fa-chevron-down"></i></a>
+            <div class="dropdown-menu">
+                <div class="dropdown-grid">
+                    <div class="dropdown-category"><h4>CONVERTERS</h4><a href="webp-to-png.html">WebP to PNG</a><a href="to-webp.html">Image to WebP</a><a href="to-base64.html">Image to Base64</a><a href="base64-to-image.html">Base64 to Image</a></div>
+                    <div class="dropdown-category"><h4>ENHANCERS</h4><a href="image-to-hd.html">Image to HD</a><a href="blur.html">Blur Effect</a><a href="brightness.html">Brightness</a><a href="grayscale.html">Grayscale</a></div>
+                    <div class="dropdown-category"><h4>PDF TOOLS</h4><a href="image-to-pdf.html">Image to PDF</a><a href="pdf-to-image.html">PDF to Image</a></div>
+                    <div class="dropdown-category"><h4>UTILITIES</h4><a href="rotate.html">Rotate Image</a><a href="watermark.html">Add Watermark</a><a href="png-to-jpg.html">PNG to JPG</a></div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<main class="main-container">
+    <div class="tool-card">
+        <div class="tool-status">⚡ 100% Client-Side | No Upload</div>
+        <h1 class="page-title">Rotate & Flip Image</h1>
+        <p class="page-subtitle">Rotate by any angle, flip, or use quick presets.</p>
+
+        <div id="uploadArea" class="upload-area">
+            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="upload-title">Drop your image here or click to browse</div>
+            <div class="upload-subtitle">Supports JPG, PNG, WebP, GIF | Max 50MB</div>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        </div>
+
+        <div id="toolContainer" style="display: none;">
+            <!-- Preset buttons row -->
+           
+
+            <!-- Transformed image preview -->
+            <div class="preview-area">
+                <h4><i class="fas fa-sync-alt"></i> Transformed Image</h4>
+                <img id="transformedPreview" alt="Transformed">
+                <div id="infoBadge" class="info-badge"></div>
+            </div>
+
+            <!-- Angle control placed below the image -->
+            <div class="angle-control">
+                <label>Rotate Angle:</label>
+                <input type="range" id="angleSlider" min="0" max="360" step="1" value="0">
+                <input type="number" id="angleNum" min="0" max="360" step="1" value="0">
+                <span>°</span>
+            </div>
+             <div class="preset-buttons">
+                <button id="rotate90" class="preset-btn"><i class="fas fa-undo-alt"></i> 90°</button>
+                <button id="rotate180" class="preset-btn"><i class="fas fa-sync-alt"></i> 180°</button>
+                <button id="rotate270" class="preset-btn"><i class="fas fa-redo-alt"></i> 270°</button>
+                <button id="flipH" class="preset-btn"><i class="fas fa-arrows-alt-h"></i> Flip H</button>
+                <button id="flipV" class="preset-btn"><i class="fas fa-arrows-alt-v"></i> Flip V</button>
+            </div>
+            <div class="btn-group">
+                <button id="downloadBtn" class="btn btn-success" style="display: none;"><i class="fas fa-download"></i> Download Image</button>
+                <button id="resetBtn" class="btn btn-secondary"><i class="fas fa-trash-alt"></i> Clear All</button>
+            </div>
+        </div>
+
+        <div id="messageArea"></div>
+
+        <div class="how-to">
+            <h3><i class="fas fa-info-circle"></i> How to use</h3>
+            <ul style="margin-left: 1.5rem;">
+                <li>1. Upload an image.</li>
+                <li>2. Use preset buttons (90°, 180°, 270°, Flip) or drag the angle slider below the image.</li>
+                <li>3. Preview updates instantly.</li>
+                <li>4. Download your transformed image.</li>
+            </ul>
+        </div>
+
+        <div class="trust-badge">
+            <h3><i class="fas fa-lock"></i> 100% Private & Secure</h3>
+            <p>All processing happens in your browser. No upload, no server.</p>
+        </div>
+
+        <div class="related-tools">
+            <h3>Related Tools</h3>
+            <div class="related-tools-list">
+                <a href="crop-image.html" class="related-tool-link"><i class="fas fa-crop"></i> Crop</a>
+                <a href="resize-image.html" class="related-tool-link"><i class="fas fa-expand-alt"></i> Resize</a>
+                <a href="watermark.html" class="related-tool-link"><i class="fas fa-watermark"></i> Watermark</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2026 PicShift | All processing done locally</p>
+    <p><a href="about.html">About</a> | <a href="contact.html">Contact</a> | <a href="privacy-policy.html">Privacy</a> | <a href="terms.html">Terms</a></p>
+</footer>
+
+<script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const toolContainer = document.getElementById('toolContainer');
+    const transformedPreview = document.getElementById('transformedPreview');
+    const infoBadge = document.getElementById('infoBadge');
+    const rotate90Btn = document.getElementById('rotate90');
+    const rotate180Btn = document.getElementById('rotate180');
+    const rotate270Btn = document.getElementById('rotate270');
+    const flipHBtn = document.getElementById('flipH');
+    const flipVBtn = document.getElementById('flipV');
+    const angleSlider = document.getElementById('angleSlider');
+    const angleNum = document.getElementById('angleNum');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const messageDiv = document.getElementById('messageArea');
+
+    let originalImage = new Image();
+    let currentAngle = 0;
+    let flipH = false;
+    let flipV = false;
+    let transformedDataUrl = null;
+
+    function showMessage(msg, type) {
+        messageDiv.innerHTML = `<div class="${type}-message">${msg}</div>`;
+        setTimeout(() => messageDiv.innerHTML = '', 3000);
+    }
+
+    function updateAngleUI(value) {
+        angleSlider.value = value;
+        angleNum.value = value;
+        currentAngle = value;
+        applyTransformation();
+    }
+
+    angleSlider.addEventListener('input', (e) => updateAngleUI(parseInt(e.target.value)));
+    angleNum.addEventListener('input', (e) => {
+        let val = parseInt(e.target.value);
+        if (isNaN(val)) val = 0;
+        val = Math.min(360, Math.max(0, val));
+        updateAngleUI(val);
+    });
+
+    uploadArea.onclick = () => fileInput.click();
+    fileInput.onchange = (e) => e.target.files[0] && handleFile(e.target.files[0]);
+    uploadArea.ondragover = (e) => e.preventDefault();
+    uploadArea.ondrop = (e) => {
+        e.preventDefault();
+        if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    };
+
+    function handleFile(file) {
+        if (!file.type.startsWith('image/')) {
+            showMessage('Please select an image file', 'error');
+            return;
+        }
+        if (file.size > 50 * 1024 * 1024) {
+            showMessage('File too large (max 50MB)', 'error');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            originalImage.onload = () => {
+                currentAngle = 0;
+                flipH = false;
+                flipV = false;
+                angleSlider.value = 0;
+                angleNum.value = 0;
+                uploadArea.style.display = 'none';
+                toolContainer.style.display = 'block';
+                applyTransformation();
+                showMessage('Image loaded. Use buttons or slider to rotate.', 'success');
+            };
+            originalImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function applyTransformation() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const rad = currentAngle * Math.PI / 180;
+        const cos = Math.abs(Math.cos(rad));
+        const sin = Math.abs(Math.sin(rad));
+        const origW = originalImage.width;
+        const origH = originalImage.height;
+        const newW = Math.floor(origW * cos + origH * sin);
+        const newH = Math.floor(origW * sin + origH * cos);
+        canvas.width = newW;
+        canvas.height = newH;
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate(rad);
+        if (flipH) ctx.scale(-1, 1);
+        if (flipV) ctx.scale(1, -1);
+        ctx.drawImage(originalImage, -origW / 2, -origH / 2, origW, origH);
+        ctx.restore();
+        transformedDataUrl = canvas.toDataURL('image/png');
+        transformedPreview.src = transformedDataUrl;
+        infoBadge.innerHTML = `${newW} × ${newH} px • Angle: ${currentAngle}°`;
+        downloadBtn.style.display = 'inline-flex';
+    }
+
+    function rotateBy(delta) {
+        let newAngle = currentAngle + delta;
+        newAngle = ((newAngle % 360) + 360) % 360;
+        updateAngleUI(newAngle);
+    }
+
+    rotate90Btn.onclick = () => rotateBy(90);
+    rotate180Btn.onclick = () => rotateBy(180);
+    rotate270Btn.onclick = () => rotateBy(270);
+    flipHBtn.onclick = () => { flipH = !flipH; applyTransformation(); };
+    flipVBtn.onclick = () => { flipV = !flipV; applyTransformation(); };
+
+    function downloadImage() {
+        if (!transformedDataUrl) return;
+        const link = document.createElement('a');
+        link.download = `transformed_${Date.now()}.png`;
+        link.href = transformedDataUrl;
+        link.click();
+        showMessage('Image downloaded!', 'success');
+    }
+
+    function reset() {
+        originalImage = new Image();
+        currentAngle = 0;
+        flipH = false;
+        flipV = false;
+        angleSlider.value = 0;
+        angleNum.value = 0;
+        transformedDataUrl = null;
+        toolContainer.style.display = 'none';
+        uploadArea.style.display = 'block';
+        fileInput.value = '';
+        downloadBtn.style.display = 'none';
+        messageDiv.innerHTML = '';
+        transformedPreview.src = '';
+    }
+
+    downloadBtn.onclick = downloadImage;
+    resetBtn.onclick = reset;
+</script>
+</body>
+</html>
