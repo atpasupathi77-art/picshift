@@ -14,6 +14,12 @@
             padding: 0;
             box-sizing: border-box;
         }
+        /* Prevent horizontal scroll on entire page */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background: #F8FAFC;
@@ -111,7 +117,14 @@
             }
         }
 
-        .main-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        /* Ensure main container does not overflow */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            overflow-x: hidden;
+            width: 100%;
+        }
         .tool-card {
             background: white;
             border-radius: 24px;
@@ -158,9 +171,30 @@
         }
         .quality-label { display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-weight: 600; }
         .quality-value { color: #299ACE; font-weight: 700; }
-        input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; background: #E2E8F0; border-radius: 10px; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #299ACE; border-radius: 50%; cursor: pointer; }
-        .slider-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: #64748B; margin-top: 0.5rem; }
+        /* Prevent slider from causing horizontal scroll on touch */
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: #E2E8F0;
+            border-radius: 10px;
+            touch-action: pan-y;  /* prevents horizontal scroll while sliding vertically */
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #299ACE;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #64748B;
+            margin-top: 0.5rem;
+        }
 
         .preview-area {
             text-align: center;
@@ -242,6 +276,11 @@
             .main-container { padding: 1rem; }
             .page-title { font-size: 1.5rem; }
             .size-info { gap: 1rem; }
+            /* Ensure no element causes overflow */
+            .tool-card, .upload-area, .quality-container, .preview-area, .btn-group {
+                max-width: 100%;
+                overflow-x: hidden;
+            }
         }
     </style>
 </head>
